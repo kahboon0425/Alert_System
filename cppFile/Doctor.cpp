@@ -1,5 +1,8 @@
 #include "../headerFile/Doctor.h"
 #include "../headerFile/MOHAdmin.h"
+#include "../headerFile/Doctor.h"
+#include "../headerFile/DengueReport.h"
+#include "../headerFile/LinkedList.h"
 #include <iostream>
 
 Doctor::Doctor(const string& username, const string& password, const string& residence, const int& phoneNo) {
@@ -7,6 +10,8 @@ Doctor::Doctor(const string& username, const string& password, const string& res
     userPassword = password;
     userResidence = residence;
     userPhoneNo = phoneNo;
+   
+    
 }
 
 string Doctor::getUsername(){
@@ -35,4 +40,25 @@ void Doctor::modifyProfile(const string& newUsername, const string& newPassword,
     userResidence = newResidence;
     userPhoneNo = newPhoneNo;
 }
+
+
+// Doctor::~Doctor()
+// {
+//     // Clean up the list of reports
+//     DengueReportNode* current = head;
+
+//     while (current != nullptr) {
+//         DengueReportNode* temp = current;
+//         current = current->next;
+//         delete temp;
+//     }
+// }
+
+
+
+
+
+
+
+
 

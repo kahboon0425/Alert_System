@@ -6,7 +6,6 @@
 #include "cppFile/User.cpp"
 #include "cppFile/Doctor.cpp"
 #include "cppFile/DengueReport.cpp"
-#include "cppFile/LinkedList.cpp"
 
 #include <string> // Add this line to include the <string> header
 
@@ -218,7 +217,8 @@ void mainMenu(Admin &admin, Doctor &doctor)
                     cout << "Enter report date: ";
                     cin.ignore();
                     getline(cin, reportDate);
-                    break; 
+                    doctor.reportPatient(patientName, patientAge, reportDate);
+
                     // continue; // Continue the loop to allow more actions
 
                 case 3: // View Reported Cases
@@ -328,7 +328,3 @@ int main()
 
     return 0;
 }
-
-
-
-

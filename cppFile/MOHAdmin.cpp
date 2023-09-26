@@ -71,7 +71,7 @@ void Admin::updateUserInformation(const string& username, const string& newUsern
         if (userContainer[i].getUsername() == username) {
             // Update the user's information
             userContainer[i].modifyProfile(newUsername, newPassword, newResidence, newPhoneNo);
-         
+            cout << "Profile information updated successfully." << endl;
             return;
         }
     }
