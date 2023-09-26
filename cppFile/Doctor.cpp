@@ -1,63 +1,51 @@
 #include "../headerFile/Doctor.h"
 #include "../headerFile/MOHAdmin.h"
 #include "../headerFile/Doctor.h"
-#include "../headerFile/DengueReport.h"
-#include "../headerFile/LinkedList.h"
+// #include "../headerFile/DengueReport.h"
+// #include "../headerFile/LinkedList.h"
 #include <iostream>
 
-Doctor::Doctor(const string& username, const string& password, const string& residence, const int& phoneNo) {
+Doctor::Doctor(const string &username, const string &password, const string &residence, const int &phoneNo)
+{
     userUsername = username;
     userPassword = password;
     userResidence = residence;
     userPhoneNo = phoneNo;
-   
-    
+
 }
 
-string Doctor::getUsername(){
+string Doctor::getUsername()
+{
     return userUsername;
 }
 
-string Doctor::getPassword(){
+string Doctor::getPassword()
+{
     return userPassword;
 }
 
-string Doctor::getResidence(){
+string Doctor::getResidence()
+{
     return userResidence;
 }
 
-int Doctor::getPhoneNo(){
+int Doctor::getPhoneNo()
+{
     return userPhoneNo;
 }
 
-bool Doctor::login(const string& username, const string& password) {
+bool Doctor::login(const string &username, const string &password)
+{
     return (username == userUsername && password == userPassword);
 }
 
-void Doctor::modifyProfile(const string& newUsername, const string& newPassword, const string& newResidence, const int& newPhoneNo) {
+void Doctor::modifyProfile(const string &newUsername, const string &newPassword, const string &newResidence, const int &newPhoneNo)
+{
     userUsername = newUsername;
     userPassword = newPassword;
     userResidence = newResidence;
     userPhoneNo = newPhoneNo;
 }
-
-
-// Doctor::~Doctor()
-// {
-//     // Clean up the list of reports
-//     DengueReportNode* current = head;
-
-//     while (current != nullptr) {
-//         DengueReportNode* temp = current;
-//         current = current->next;
-//         delete temp;
-//     }
-// }
-
-
-
-
-
 
 
 

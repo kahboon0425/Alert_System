@@ -10,11 +10,9 @@
 
 #include <string> // Add this line to include the <string> header
 
-
-
 using namespace std;
 
-void mainMenu(Admin &admin, Doctor &doctor)
+void mainMenu(Admin &admin, Doctor &doctor, LinkedList &patientList)
 {
 
     string admin_username;
@@ -209,17 +207,23 @@ void mainMenu(Admin &admin, Doctor &doctor)
                     continue;
 
                 case 2: // Report Cases
-                    
-                    cout << "Enter patient's name: ";
-                    cin.ignore();
-                    getline(cin, patientName);
-                    cout << "Enter patient's age: ";
-                    cin >> patientAge;
-                    cout << "Enter report date: ";
-                    cin.ignore();
-                    getline(cin, reportDate);
-                    break; 
-                    // continue; // Continue the loop to allow more actions
+
+                    // cout << "Enter patient's name: ";
+                    // cin.ignore();
+                    // getline(cin, patientName);
+                    // cout << "Enter patient's age: ";
+                    // cin >> patientAge;
+                    // cout << "Enter report date: ";
+                    // cin.ignore();
+                    // getline(cin, reportDate);
+                    // break;
+
+                    patientList.insert(Patient(1, "John Doe", 30, "555-123-4567"));
+                    patientList.insert(Patient(2, "Jane Smith", 25, "555-987-6543"));
+
+                    patientList.print();
+
+                    break; // Continue the loop to allow more actions
 
                 case 3: // View Reported Cases
                     // code
@@ -320,15 +324,12 @@ int main()
 {
     Admin admin("admin", "admin123");
     Doctor doctor;
+    LinkedList patientList;
 
     while (true)
     {
-        mainMenu(admin, doctor);
+        mainMenu(admin, doctor, patientList);
     }
 
     return 0;
 }
-
-
-
-
