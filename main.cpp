@@ -5,14 +5,13 @@
 #include "cppFile/MOHAdmin.cpp"
 #include "cppFile/User.cpp"
 #include "cppFile/Doctor.cpp"
-#include "cppFile/DengueReport.cpp"
-#include "cppFile/LinkedList.cpp"
+#include "cppFile/DengueCases.cpp"
 
 #include <string> // Add this line to include the <string> header
 
 using namespace std;
 
-void mainMenu(Admin &admin, Doctor &doctor, LinkedList &patientList)
+void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases)
 {
 
     string admin_username;
@@ -218,10 +217,10 @@ void mainMenu(Admin &admin, Doctor &doctor, LinkedList &patientList)
                     // getline(cin, reportDate);
                     // break;
 
-                    patientList.insert(Patient(1, "John Doe", 30, "555-123-4567"));
-                    patientList.insert(Patient(2, "Jane Smith", 25, "555-987-6543"));
+                    dengueCases.insert(Patient(1, "John Doe", 30,  "Johor", 012, 011, "11 May 2022", "Kahboon"));
+                    dengueCases.insert(Patient(2, "Jane Smith", 25, "KL", 012, 011, "11 May 2022", "KahHui"));
 
-                    patientList.print();
+                    dengueCases.print();
 
                     break; // Continue the loop to allow more actions
 
@@ -324,11 +323,11 @@ int main()
 {
     Admin admin("admin", "admin123");
     Doctor doctor;
-    LinkedList patientList;
+    DengueCasesLinkedList dengueCases;
 
     while (true)
     {
-        mainMenu(admin, doctor, patientList);
+        mainMenu(admin, doctor, dengueCases);
     }
 
     return 0;

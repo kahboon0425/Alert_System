@@ -5,16 +5,13 @@
 #include "cppFile/MOHAdmin.cpp"
 #include "cppFile/User.cpp"
 #include "cppFile/Doctor.cpp"
-#include "cppFile/DengueReport.cpp"
-#include "cppFile/LinkedList.cpp"
+#include "cppFile/DengueCases.cpp"
 
 #include <string> // Add this line to include the <string> header
 
-
-
 using namespace std;
 
-void mainMenu(Admin &admin, Doctor &doctor)
+void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases)
 {
 
     string admin_username;
@@ -209,7 +206,7 @@ void mainMenu(Admin &admin, Doctor &doctor)
                     continue;
 
                 case 2: // Report Cases
-                    
+
                     // cout << "Enter patient's name: ";
                     // cin.ignore();
                     // getline(cin, patientName);
@@ -218,14 +215,14 @@ void mainMenu(Admin &admin, Doctor &doctor)
                     // cout << "Enter report date: ";
                     // cin.ignore();
                     // getline(cin, reportDate);
-                    // break; 
-                 
+                    // break;
 
-                    doctor.addPatient("John Doe", 30, "2023-09-26", "Dr. Smith");
+                    dengueCases.insert(Patient(1, "John Doe", 30,  "Johor", 012, 011, "11 May 2022", "Kahboon"));
+                    dengueCases.insert(Patient(2, "Jane Smith", 25, "KL", 012, 011, "11 May 2022", "KahHui"));
 
-                    std::cout << "List of Dengue Patients:" << std::endl;
-                    doctor.displayPatients();
-                    continue; // Continue the loop to allow more actions
+                    dengueCases.print();
+
+                    break; // Continue the loop to allow more actions
 
                 case 3: // View Reported Cases
                     // code
@@ -326,15 +323,12 @@ int main()
 {
     Admin admin("admin", "admin123");
     Doctor doctor;
+    DengueCasesLinkedList dengueCases;
 
     while (true)
     {
-        mainMenu(admin, doctor);
+        mainMenu(admin, doctor, dengueCases);
     }
 
     return 0;
 }
-
-
-
-

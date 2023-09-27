@@ -12,7 +12,6 @@ public:
     bool login(const string &username, const string &password);
     void modifyProfile(const string &newUsername, const string &newPassword, const string &newResidence, const int &newPhoneNo);
   
-
     // Getter
     string getUsername();
     string getPassword();
