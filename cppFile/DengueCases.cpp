@@ -4,7 +4,7 @@
 using namespace std;
 
 
-Patient::Patient(const int &id, const string &name, const int &age, const string &residence, const int &phoneNo, const int &emergencyContactNo, const string &date, const string &doctor){
+Patient::Patient(const string &id, const string &name, const int &age, const string &residence, const int &phoneNo, const int &emergencyContactNo, const string &date, const string &doctor){
     patientId = id;
     patientName = name;
     patientAge = age;
@@ -15,7 +15,7 @@ Patient::Patient(const int &id, const string &name, const int &age, const string
     doctorReported = doctor;
 }
 
-int Patient::getPatientId(){
+string Patient::getPatientId(){
     return patientId;
 }
 

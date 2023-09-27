@@ -6,10 +6,10 @@ class Patient
 {
 public:
     Patient(){};
-    Patient(const int &id, const string &name, const int &age, const string &residence, const int &phoneNo, const int &emergencyContactNo, const string &date, const string &doctor);
+    Patient(const string &id, const string &name, const int &age, const string &residence, const int &phoneNo, const int &emergencyContactNo, const string &date, const string &doctor);
     
     // Getter
-    int getPatientId();
+    string getPatientId();
     string getPatientName();
     int getPatientAge();
     string getPatientResidence();
@@ -19,7 +19,7 @@ public:
     string getDoctorReported();
 
 private:
-    int patientId;
+    string patientId;
     string patientName;
     int patientAge;
     string patientResidence;
