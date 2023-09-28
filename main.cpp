@@ -222,25 +222,19 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                     for (int i = 0; i < noOfCases; i++)
                     {
                         cout << "Enter patient's Id: ";
-                        // cin.ignore();
-                        // getline(cin, patientId);
                         cin >> patientId;
                         cout << "Enter patient's name: ";
                         cin >> patientName;
-                        // cin.ignore();
-                        // getline(cin, patientName);
                         cout << "Enter patient's age: ";
                         cin >> patientAge;
                         cout << "Enter patient's residence: ";
-                        cin.ignore();
-                        getline(cin, patientResidence);
+                        cin >> patientResidence;
                         cout << "Enter patient's phone number: ";
                         cin >> patientPhoneNo;
                         cout << "Enter patient's emergency contact number: ";
                         cin >> patientEmergencyContactNo;
                         cout << "Enter a date in YYYY-MM-DD format: ";
-                        cin.ignore();
-                        getline(cin, reportDate);
+                        cin >> reportDate;
 
                         if (dengueCases.isValidDate(reportDate, "%Y-%m-%d"))
                         {
@@ -315,13 +309,11 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                     cout << "\n>>>>> Create New Doctor >>>>\n"
                          << endl;
                     cout << "Username: ";
-                    cin.ignore();
-                    getline(cin, user_username);
+                    cin >> user_username;
                     cout << "Password: ";
                     cin >> user_password;
                     cout << "Residence: ";
-                    cin.ignore();
-                    getline(cin, user_residence);
+                    cin >> user_residence;
                     cout << "Phone Number: ";
                     cin >> user_phoneNo;
                     admin.createDoctor(user_username, user_password, user_residence, user_phoneNo);
@@ -331,13 +323,11 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                     cout << "\n>>>>> Create New User >>>>\n"
                          << endl;
                     cout << "Username: ";
-                    cin.ignore();
-                    getline(cin, user_username);
+                    cin >> user_username;
                     cout << "Password: ";
                     cin >> user_password;
                     cout << "Residence: ";
-                    cin.ignore();
-                    getline(cin, user_residence);
+                    cin >> user_residence;
                     cout << "Phone Number: ";
                     cin >> user_phoneNo;
                     admin.createUser(user_username, user_password, user_residence, user_phoneNo);
