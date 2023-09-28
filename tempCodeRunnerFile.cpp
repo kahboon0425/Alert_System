@@ -11,7 +11,7 @@
 
 using namespace std;
 
-void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases)
+void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, Patient &patient)
 {
 
     string admin_username;
@@ -33,10 +33,20 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases)
     string newResidence;
     int newPhoneNo;
 
+    // Dengue Cases
+    int noOfCases;
+    string patientId;
     string patientName;
     int patientAge;
+    string patientResidence;
+    int patientPhoneNo;
+    int patientEmergencyContactNo;
     string reportDate;
 
+    // Node *current = dengueCases.getHead();
+
+    // Patient latestCase;
+    
     bool returnToAdminMenu = false;
 
     cout << "\n----------- DENGUE FEVER SURVEILLANCE AND ALERT SYSTEM -----------\n"
@@ -207,27 +217,39 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases)
 
                 case 2: // Report Cases
 
-                    // cout << "Enter patient's name: ";
-                    // cin.ignore();
-                    // getline(cin, patientName);
-                    // cout << "Enter patient's age: ";
-                    // cin >> patientAge;
-                    // cout << "Enter report date: ";
-                    // cin.ignore();
-                    // getline(cin, reportDate);
-                    // break;
+                    cout << "How many cases you want to report?: ";
+                    cin >> noOfCases;
+                    for (int i = 0; i < noOfCases; i++)
+                    {
+                        cout << "Enter patient's Id: ";
+                        cin.ignore();
+                        getline(cin, patientId);
+                        cout << "Enter patient's name: ";
+                        cin.ignore();
+                        getline(cin, patientName);
+                        cout << "Enter patient's age: ";
+                        cin >> patientAge;
+                        cout << "Enter patient's residence: ";
+                        cin.ignore();
+                        getline(cin, patientResidence);
+                        cout << "Enter patient's phone number: ";
+                        cin >> patientPhoneNo;
+                        cout << "Enter patient's emergency contact number: ";
+                        cin >> patientEmergencyContactNo;
+                        cout << "Enter report date: ";
+                        cin.ignore();
+                        getline(cin, reportDate);
+                        cout << "Enter report doctor: ";
 
-                    dengueCases.insert(Patient(1, "John Doe", 30,  "Johor", 012, 011, "11 May 2022", "Kahboon"));
-                    dengueCases.insert(Patient(2, "Jane Smith", 25, "KL", 012, 011, "11 May 2022", "KahHui"));
+                        dengueCases.insert(Patient(patientId, patientName, patientAge, patientResidence, patientPhoneNo, patientEmergencyContactNo, reportDate, doctorInfo.getUsername()));
+                    };
 
-                    dengueCases.print();
-
-                    break; // Continue the loop to allow more actions
+                    continue;
 
                 case 3: // View Reported Cases
-                    // code
-                    // doctor.displayAllReports();
-                    // break;
+                    
+                    patient.findLatestCaseByDoctor(dengueCases.getHead(), doctorInfo.getUsername());
+                    // dengueCases.print();
                     continue;
                 case 4: // Find Age And State
                     // code
@@ -324,10 +346,11 @@ int main()
     Admin admin("admin", "admin123");
     Doctor doctor;
     DengueCasesLinkedList dengueCases;
+    Patient patient;
 
     while (true)
     {
-        mainMenu(admin, doctor, dengueCases);
+        mainMenu(admin, doctor, dengueCases, patient);
     }
 
     return 0;

@@ -2,6 +2,7 @@
 #include "headerFile/MOHAdmin.h"
 #include "headerFile/User.h"
 #include "headerFile/Doctor.h"
+#include "headerFile/DengueCases.h"
 #include "cppFile/MOHAdmin.cpp"
 #include "cppFile/User.cpp"
 #include "cppFile/Doctor.cpp"
@@ -11,7 +12,7 @@
 
 using namespace std;
 
-void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases)
+void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, Patient &patient)
 {
 
     string admin_username;
@@ -42,7 +43,10 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases)
     int patientPhoneNo;
     int patientEmergencyContactNo;
     string reportDate;
-    string reportDoctor;
+
+    // Node *current = dengueCases.getHead();
+
+    // Patient latestCase;
 
     bool returnToAdminMenu = false;
 
@@ -233,21 +237,28 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases)
                         cin >> patientPhoneNo;
                         cout << "Enter patient's emergency contact number: ";
                         cin >> patientEmergencyContactNo;
-                        cout << "Enter report date: ";
+                        cout << "Enter a date in YYYY-MM-DD format: ";
                         cin.ignore();
                         getline(cin, reportDate);
-                        cout << "Enter report doctor: ";
-                        cin.ignore();
-                        getline(cin, reportDoctor);
 
-                        dengueCases.insert(Patient(patientId, patientName, patientAge, patientResidence, patientPhoneNo, patientEmergencyContactNo, reportDate, reportDoctor));
+                        if (dengueCases.isValidDate(reportDate, "%Y-%m-%d"))
+                        {
+                            cout << "Valid date: " << reportDate << endl;
+                        }
+                        else
+                        {
+                            cout << "Invalid date format. Please enter the date in YYYY-MM-DD format." << std::endl;
+                        }
+
+                        dengueCases.insert(Patient(patientId, patientName, patientAge, patientResidence, patientPhoneNo, patientEmergencyContactNo, reportDate, doctorInfo.getUsername()));
                     };
 
                     continue;
 
                 case 3: // View Reported Cases
-                    // code
-                    dengueCases.print();
+
+                    dengueCases.findLatestCaseByDoctor(doctorInfo.getUsername());
+                    // dengueCases.print();
                     continue;
                 case 4: // Find Age And State
                     // code
@@ -344,10 +355,11 @@ int main()
     Admin admin("admin", "admin123");
     Doctor doctor;
     DengueCasesLinkedList dengueCases;
+    Patient patient;
 
     while (true)
     {
-        mainMenu(admin, doctor, dengueCases);
+        mainMenu(admin, doctor, dengueCases, patient);
     }
 
     return 0;
