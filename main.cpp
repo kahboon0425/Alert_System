@@ -44,9 +44,8 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
     int patientEmergencyContactNo;
     string reportDate;
 
-    // Node *current = dengueCases.getHead();
-
-    // Patient latestCase;
+    string searchPatientId;
+    string searchPatientName;
 
     bool returnToAdminMenu = false;
 
@@ -223,11 +222,13 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                     for (int i = 0; i < noOfCases; i++)
                     {
                         cout << "Enter patient's Id: ";
-                        cin.ignore();
-                        getline(cin, patientId);
+                        // cin.ignore();
+                        // getline(cin, patientId);
+                        cin >> patientId;
                         cout << "Enter patient's name: ";
-                        cin.ignore();
-                        getline(cin, patientName);
+                        cin >> patientName;
+                        // cin.ignore();
+                        // getline(cin, patientName);
                         cout << "Enter patient's age: ";
                         cin >> patientAge;
                         cout << "Enter patient's residence: ";
@@ -256,16 +257,20 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                     continue;
 
                 case 3: // View Reported Cases
-
                     dengueCases.findLatestCaseByDoctor(doctorInfo.getUsername());
-                  
                     continue;
-                case 4: // Find Age And State
-                    // code
-                    break;
-                case 5: // Find Name And Id
-                    // code
-                    break;
+
+                case 4: // Find Name And Id
+                    cout << ">>>>>>>> Find dengue fever cases based on patient name or patient id >>>>>>>" << endl;
+                    cout << "Enter Patient Id: ";
+                    cin >> searchPatientId;
+                    cout << "Enter Patient Name: ";
+                    cin >> searchPatientName;
+                    dengueCases.findDengueCasesByPatientIdAndName(searchPatientId, searchPatientName);
+                    continue;
+                case 5: // Find Age And State
+                    dengueCases.print();
+                    continue;
                 case 6: // Logout
                     return;
                 }

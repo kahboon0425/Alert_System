@@ -13,8 +13,8 @@ public:
     
 
     // Getter
-    string getPatientId();
-    string getPatientName();
+    string getPatientId() const;
+    string getPatientName() const;
     int getPatientAge();
     string getPatientResidence();
     int getPatientPhoneNo();
@@ -48,9 +48,10 @@ class DengueCasesLinkedList
 public:
     DengueCasesLinkedList();
     void insert(const Patient &reportedData);
-    // void print();
+    void print();
     void findLatestCaseByDoctor(const string& doctorUsername);
     bool isValidDate(const string &dateStr, const string &format);
+    void findDengueCasesByPatientIdAndName(const string &patientID, const string &patientName);
 
 private:
     Node *head;

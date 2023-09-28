@@ -17,12 +17,12 @@ Patient::Patient(const string &id, const string &name, const int &age, const str
     doctorReported = doctor;
 }
 
-string Patient::getPatientId()
+string Patient::getPatientId() const
 {
     return patientId;
 }
 
-string Patient::getPatientName()
+string Patient::getPatientName() const
 {
     return patientName;
 }
@@ -91,22 +91,22 @@ void DengueCasesLinkedList::insert(const Patient &reportedData)
     size++;
 }
 
-// void DengueCasesLinkedList::print()
-// {
-//     Node *current = head;
-//     while (current != nullptr)
-//     {
-//         cout << "\nPatient Id: " << current->data.getPatientId() << endl;
-//         cout << "Patient Name: " << current->data.getPatientName() << endl;
-//         cout << "Patient Age: " << current->data.getPatientAge() << endl;
-//         cout << "Patient Residence: " << current->data.getPatientResidence() << endl;
-//         cout << "Patient Phone No: " << current->data.getPatientPhoneNo() << endl;
-//         cout << "Patient Emergency Contact: " << current->data.getPatientEmergencyContactNo() << endl;
-//         cout << "Date Reported: " << current->data.getDateReported() << endl;
-//         cout << "Doctor Reported: " << current->data.getDoctorReported() << endl;
-//         current = current->next;
-//     }
-// }
+void DengueCasesLinkedList::print()
+{
+    Node *current = head;
+    while (current != nullptr)
+    {
+        cout << "\nPatient Id: " << current->data.getPatientId() << endl;
+        cout << "Patient Name: " << current->data.getPatientName() << endl;
+        cout << "Patient Age: " << current->data.getPatientAge() << endl;
+        cout << "Patient Residence: " << current->data.getPatientResidence() << endl;
+        cout << "Patient Phone No: " << current->data.getPatientPhoneNo() << endl;
+        cout << "Patient Emergency Contact: " << current->data.getPatientEmergencyContactNo() << endl;
+        cout << "Date Reported: " << current->data.getDateReported() << endl;
+        cout << "Doctor Reported: " << current->data.getDoctorReported() << endl;
+        current = current->next;
+    }
+}
 
 bool DengueCasesLinkedList::isValidDate(const string &dateStr, const string &format) {
     tm tm = {};
@@ -134,23 +134,23 @@ void DengueCasesLinkedList::findLatestCaseByDoctor(const string &doctorUsername)
             string currentDateStr = record.getDateReported(); // Get the date string from the patient record.
 
             // Parse the date string into a tm struct
-            std::tm currentDate = {}; // Create a tm struct to hold the parsed date.
-            std::istringstream dateStream(currentDateStr); // Create a string stream for parsing.
-            dateStream >> std::get_time(&currentDate, "%Y-%m-%d"); // Parse the date string.
+            tm currentDate = {}; // Create a tm struct to hold the parsed date.
+            istringstream dateStream(currentDateStr); // Create a string stream for parsing.
+            dateStream >> get_time(&currentDate, "%Y-%m-%d"); // Parse the date string.
 
             if (!dateStream.fail()) // Check if the date parsing was successful.
             {
                 // Compare the current date with the latest date
-                std::tm latestDate = {}; // Create a tm struct to hold the latest date.
+                tm latestDate = {}; // Create a tm struct to hold the latest date.
 
-                // Parse the date string from the latestCase (if any)
+                // Parse the date string from the latestCase 
                 if (found) {
-                    std::istringstream latestDateStream(latestCase.getDateReported());
-                    latestDateStream >> std::get_time(&latestDate, "%Y-%m-%d");
+                    istringstream latestDateStream(latestCase.getDateReported());
+                    latestDateStream >> get_time(&latestDate, "%Y-%m-%d");
                 }
 
-                // Compare the current date with the latest date using std::mktime
-                if (!found || std::mktime(&currentDate) > std::mktime(&latestDate))
+                // Compare the current date with the latest date using mktime
+                if (!found || mktime(&currentDate) > mktime(&latestDate))
                 {
                     latestCase = record; // Update the latestCase variable with the current record.
                     found = true; // Set the flag to indicate that a case was found.
@@ -180,5 +180,41 @@ void DengueCasesLinkedList::findLatestCaseByDoctor(const string &doctorUsername)
     }
 }
 
+
+
+void DengueCasesLinkedList::findDengueCasesByPatientIdAndName(const string &patientID, const string &patientName){
+    bool found = false;
+    Node *current = head;
+    Patient matchedPatient; // Variable to store the matched patient's data
+
+    while(current != nullptr){
+        const Patient &record = current->data;
+
+        if(record.getPatientId() == patientID && record.getPatientName() == patientName){
+            found = true;
+            matchedPatient = record; // Store the matched patient's data
+            break; // Exit the loop as you've found a match
+        }
+       
+        current = current->next;
+    }
+
+    if (found)
+    {
+        cout << ">>>>>> Dengue Case Found: >>>>>>\n" << endl;
+        cout << "Patient Id: " << matchedPatient.getPatientId() << endl;
+        cout << "Patient Name: " << matchedPatient.getPatientName() << endl;
+        cout << "Patient Age: " << matchedPatient.getPatientAge() << endl;
+        cout << "Patient Residence: " << matchedPatient.getPatientResidence() << endl;
+        cout << "Patient Phone No: " << matchedPatient.getPatientPhoneNo() << endl;
+        cout << "Patient Emergency Contact: " << matchedPatient.getPatientEmergencyContactNo() << endl;
+        cout << "Date Reported: " << matchedPatient.getDateReported() << endl;
+        cout << "Doctor Reported: " << matchedPatient.getDoctorReported() << endl;
+    }
+    else
+    {
+        cout << "\nDengue Cases not found!: "  << endl;
+    }
+}
 
 
