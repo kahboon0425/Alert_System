@@ -91,22 +91,22 @@ void DengueCasesLinkedList::insert(const Patient &reportedData)
     size++;
 }
 
-void DengueCasesLinkedList::print()
-{
-    Node *current = head;
-    while (current != nullptr)
-    {
-        cout << "\nPatient Id: " << current->data.getPatientId() << endl;
-        cout << "Patient Name: " << current->data.getPatientName() << endl;
-        cout << "Patient Age: " << current->data.getPatientAge() << endl;
-        cout << "Patient Residence: " << current->data.getPatientResidence() << endl;
-        cout << "Patient Phone No: " << current->data.getPatientPhoneNo() << endl;
-        cout << "Patient Emergency Contact: " << current->data.getPatientEmergencyContactNo() << endl;
-        cout << "Date Reported: " << current->data.getDateReported() << endl;
-        cout << "Doctor Reported: " << current->data.getDoctorReported() << endl;
-        current = current->next;
-    }
-}
+// void DengueCasesLinkedList::print()
+// {
+//     Node *current = head;
+//     while (current != nullptr)
+//     {
+//         cout << "\nPatient Id: " << current->data.getPatientId() << endl;
+//         cout << "Patient Name: " << current->data.getPatientName() << endl;
+//         cout << "Patient Age: " << current->data.getPatientAge() << endl;
+//         cout << "Patient Residence: " << current->data.getPatientResidence() << endl;
+//         cout << "Patient Phone No: " << current->data.getPatientPhoneNo() << endl;
+//         cout << "Patient Emergency Contact: " << current->data.getPatientEmergencyContactNo() << endl;
+//         cout << "Date Reported: " << current->data.getDateReported() << endl;
+//         cout << "Doctor Reported: " << current->data.getDoctorReported() << endl;
+//         current = current->next;
+//     }
+// }
 
 bool DengueCasesLinkedList::isValidDate(const string &dateStr, const string &format) {
     tm tm = {};

@@ -258,7 +258,7 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                 case 3: // View Reported Cases
 
                     dengueCases.findLatestCaseByDoctor(doctorInfo.getUsername());
-                    // dengueCases.print();
+                  
                     continue;
                 case 4: // Find Age And State
                     // code

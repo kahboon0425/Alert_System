@@ -48,7 +48,7 @@ class DengueCasesLinkedList
 public:
     DengueCasesLinkedList();
     void insert(const Patient &reportedData);
-    void print();
+    // void print();
     void findLatestCaseByDoctor(const string& doctorUsername);
     bool isValidDate(const string &dateStr, const string &format);
 
