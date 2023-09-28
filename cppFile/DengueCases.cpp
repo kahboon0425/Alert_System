@@ -117,54 +117,6 @@ bool DengueCasesLinkedList::isValidDate(const string &dateStr, const string &for
     return !ss.fail();
 }
 
-// void DengueCasesLinkedList::findLatestCaseByDoctor(const string &doctorUsername)
-// {
-//     Patient latestCase;
-    
-//     bool found = false;
-
-//     Node *current = head;
-
-//     while (current != nullptr)
-//     {
-//         const Patient &record = current->data;
-
-//         // Check if the patient's doctor matches the target doctor
-//         if (record.getDoctorReported() == doctorUsername)
-//         {
-//             string currentDate = record.getDateReported();
-
-//             // Compare the current date with the latest date
-//             if (!found || currentDate > latestCase.getDateReported())
-//             {
-               
-//                 Patient latestCase = record;
-//                 found = true;
-//             }
-//         }
-
-//         current = current->next;
-//     }
-
-//     // Check if a latest case was found
-//     if (found)
-//     {
-//         cout << "\nLatest Case Found:" << endl;
-//         cout << "Patient Id: " << latestCase.getPatientId() << endl;
-//         cout << "Patient Name: " << latestCase.getPatientName() << endl;
-//         cout << "Patient Age: " << latestCase.getPatientAge() << endl;
-//         cout << "Patient Residence: " << latestCase.getPatientResidence() << endl;
-//         cout << "Patient Phone No: " << latestCase.getPatientPhoneNo() << endl;
-//         cout << "Patient Emergency Contact: " << latestCase.getPatientEmergencyContactNo() << endl;
-//         cout << "Date Reported: " << latestCase.getDateReported() << endl;
-//         cout << "Doctor Reported: " << latestCase.getDoctorReported() << endl;
-//     }
-//     else
-//     {
-//         cout << "\nNo cases found for doctor: " << doctorUsername << endl;
-//     }
-// }
-
 
 void DengueCasesLinkedList::findLatestCaseByDoctor(const string &doctorUsername)
 {
