@@ -10,15 +10,14 @@ class Patient
 public:
     Patient(){};
     Patient(const string &id, const string &name, const int &age, const string &residence, const int &phoneNo, const int &emergencyContactNo, const string &date, const string &doctor);
-    
 
     // Getter
     string getPatientId() const;
     string getPatientName() const;
-    int getPatientAge();
-    string getPatientResidence();
-    int getPatientPhoneNo();
-    int getPatientEmergencyContactNo();
+    int getPatientAge() const;
+    string getPatientResidence() const;
+    int getPatientPhoneNo()const;
+    int getPatientEmergencyContactNo() const;
     string getDateReported() const;
     string getDoctorReported() const;
 
@@ -58,5 +57,6 @@ private:
     Node *tail;
     int size;
 };
+
 
 #endif
