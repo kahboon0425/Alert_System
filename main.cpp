@@ -47,6 +47,12 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
     string searchPatientId;
     string searchPatientName;
 
+    int minAge;
+    int maxAge;
+    string state1;
+    string state2;
+    int countCase;
+
     bool returnToAdminMenu = false;
 
     cout << "\n----------- DENGUE FEVER SURVEILLANCE AND ALERT SYSTEM -----------\n"
@@ -263,7 +269,20 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                     dengueCases.findDengueCasesByPatientIdAndName(searchPatientId, searchPatientName);
                     continue;
                 case 5: // Find Age And State
-                    dengueCases.print();
+                    cout << "<<<<<< Find the number of cases for any given age range and any given state range <<<<<<\n" << endl;
+                    cout << "Enter Age Range >>"<< endl;
+                    cout << "Min Age: ";
+                    cin >> minAge;
+                    cout << "Max Age: ";
+                    cin >> maxAge;
+                    cout << "\nEnter State Range >>"<< endl;
+                    cout << "State 1: ";
+                    cin >> state1;
+                    cout << "State 2: ";
+                    cin >> state2;
+                    countCase = dengueCases.countCasesByAgeAndState(minAge, maxAge, state1, state2);
+                    cout << "\nNumber of cases within the age range " << minAge << " to " << maxAge
+                         << " and state range " << state1 << " to " << state2 << ": " << countCase << endl;
                     continue;
                 case 6: // Logout
                     return;

@@ -51,6 +51,7 @@ public:
     void findLatestCaseByDoctor(const string& doctorUsername);
     bool isValidDate(const string &dateStr, const string &format);
     void findDengueCasesByPatientIdAndName(const string &patientID, const string &patientName);
+    int countCasesByAgeAndState(int minAge, int maxAge, const string &minState, const string &maxState);
 
 private:
     Node *head;

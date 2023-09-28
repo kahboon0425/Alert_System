@@ -248,9 +248,6 @@ void DengueCasesLinkedList::findLatestCaseByDoctor(const string &doctorUsername)
 
 
 
-
-
-
 void DengueCasesLinkedList::findDengueCasesByPatientIdAndName(const string &patientID, const string &patientName){
     bool found = false;
     Node *current = head;
@@ -287,3 +284,21 @@ void DengueCasesLinkedList::findDengueCasesByPatientIdAndName(const string &pati
 }
 
 
+int DengueCasesLinkedList::countCasesByAgeAndState(int minAge, int maxAge, const string &minState, const string &maxState) {
+        int caseCount = 0;
+        Node *current = head;
+
+        while (current!= nullptr) {
+            const Patient &record = current->data;
+            int age = record.getPatientAge();
+            string state = record.getPatientResidence();
+
+            if (age >= minAge && age <= maxAge && state >= minState && state <= maxState) {
+                caseCount++;
+            }
+
+            current = current->next;
+        }
+
+        return caseCount;
+    }
