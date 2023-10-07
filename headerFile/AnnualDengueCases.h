@@ -61,7 +61,8 @@ public:
 
     void readCsvFile(const string& rowData);
     void readCsvFileAnnualCases(const string &year, int &totalCases);
-    void display();
+    void displayTotalCases();
+    void displayScaledBarChart(int scaleFactor);
 
 public:
     AnnualDengueCases *head;

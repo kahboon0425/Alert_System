@@ -16,7 +16,7 @@ AnnualDengueCasesLinkedList::AnnualDengueCasesLinkedList()
     size = 0;
 }
 
-void AnnualDengueCasesLinkedList::readCsvFile(const string& rowData)
+void AnnualDengueCasesLinkedList::readCsvFile(const string &rowData)
 
 {
 
@@ -57,8 +57,7 @@ void AnnualDengueCasesLinkedList::readCsvFileAnnualCases(const string &year, int
     size++;
 }
 
-
-void AnnualDengueCasesLinkedList::display()
+void AnnualDengueCasesLinkedList::displayTotalCases()
 {
     AnnualDengueCases *current = head;
     string currentYear = "";
@@ -68,7 +67,7 @@ void AnnualDengueCasesLinkedList::display()
     {
         if (current->year != currentYear)
         {
-            // We've encountered a new year, so display the total cases for the previous year
+            //  if encountered a new year, so display the total cases for the previous year
             if (!currentYear.empty())
             {
                 cout << "Year: " << currentYear << ", Total Cases: " << totalCasesForYear << endl;
@@ -90,5 +89,56 @@ void AnnualDengueCasesLinkedList::display()
     if (!currentYear.empty())
     {
         cout << "Year: " << currentYear << ", Total Cases: " << totalCasesForYear << endl;
+    }
+}
+
+void AnnualDengueCasesLinkedList::displayScaledBarChart(int scaleFactor)
+{
+    AnnualDengueCases *current = head;
+    string currentYear = "";
+    int totalCasesForYear = 0;
+
+    while (current)
+    {
+        if (current->year != currentYear)
+        {
+            //  if encountered a new year, so display the total cases for the previous year
+            if (!currentYear.empty())
+            {
+                int scaledTotalCases = totalCasesForYear / scaleFactor;
+
+                // Display the bar chart
+                cout << "Year " << currentYear << ": ";
+                for (int i = 0; i < scaledTotalCases; i++)
+                {
+                    cout << "*";
+                }
+                cout << endl;
+            }
+
+            // Reset the total cases and update the current year
+            totalCasesForYear = 0;
+            currentYear = current->year;
+        }
+
+        // Accumulate the total cases for the current year
+        totalCasesForYear += current->totalCases;
+
+        // Move to the next node
+        current = current->next;
+    }
+
+    // Display the total cases for the last year
+    if (!currentYear.empty())
+    {
+        int scaledTotalCases = totalCasesForYear / scaleFactor;
+
+        // Display the bar chart
+        cout << "Year " << currentYear << ": ";
+        for (int i = 0; i < scaledTotalCases; i++)
+        {
+            cout << "*";
+        }
+        cout << endl;
     }
 }

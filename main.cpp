@@ -339,7 +339,6 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                     file.open(fileName);
                     if (file.is_open())
                     {
-                        // string line;
                         // Skip the header line
                         getline(file, line);
 
@@ -362,26 +361,25 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                                 columnCount++;
                             }
 
-                            // Add the totalCases to the map, grouped by year
-                            // totalCasesByYear[year] += totalCases;
                             annualDengueCases.readCsvFileAnnualCases(year, totalCases);
                         }
 
                         file.close();
-                        annualDengueCases.display();
-
-                        // // Display the total cases by year
-                        // cout << "Year\tTotal Cases" << endl;
-                        // for (const auto &entry : totalCasesByYear)
-                        // {
-                        //     cout << entry.first << "\t" << entry.second << endl;
-                        // }
+                        cout << "\n";
+                        cout << ">>>>>>>> Total Dengue Cses by Year >>>>>>>>>>>>\n" << endl;
+                        annualDengueCases.displayTotalCases();
+                        cout << "\n";
+                        
                     }
                     else
                     {
                         cout << "Could not open the file\n"; // Display an error message if the file couldn't be opened
                     }
 
+                    cout << ">>>>>>>> Bar Chart(scaled by 1000) >>>>>>>>>>>>\n" << endl;
+                    annualDengueCases.displayScaledBarChart(1000);
+                    cout << "\n";
+                        
                     
                     continue;
                 case 2:
@@ -391,11 +389,11 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                     file.open(fileName);
                     if (file.is_open())
                     {
-                        // string line;
+                    
                         // Skip the header line
                         getline(file, line);
 
-                        cout << "Year\tWeek\tJHR\tKDH\tKTN\tMLK\tN.S\tPHG\tPRK\tPLS\tP.P\tSBH\tSWK\tSGR\tTRG\tKL\tLBN" << endl;
+                        cout << "\nYear\tWeek\tJHR\tKDH\tKTN\tMLK\tN.S\tPHG\tPRK\tPLS\tP.P\tSBH\tSWK\tSGR\tTRG\tKL\tLBN" << endl;
                         cout << "------------------------------------------------------------------------------------------------------------------------------------" << endl;
 
                         while (getline(file, line))
@@ -412,7 +410,7 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                                 rowData += word; // Append the current field to the row data
                             }
 
-                            annualDengueCases.readCsvFile(rowData);           // Add the complete row data to the linked list
+                            annualDengueCases.readCsvFile(rowData);  // Add the complete row data to the linked list
                             cout << rowData << endl; // Print each row
                         }
 
