@@ -142,3 +142,72 @@ void AnnualDengueCasesLinkedList::displayScaledBarChart(int scaleFactor)
         cout << endl;
     }
 }
+
+// Implement member functions for the AnnualDengueCasesLinkedList class
+void AnnualDengueCasesLinkedList::addNewDengueCases(const DengueCasesLinkedList &dengueCasesList)
+{
+    Node *current = dengueCasesList.head;
+    int tempTotalCases = 1;
+
+    while (current != nullptr)
+    {
+        const Patient &dengueCase = current->data;
+
+        // Extract relevant information from the dengue case to add to the annual list
+        string year = dengueCase.getDateReported().substr(0, 4); // Extract the year
+
+        // Check if a node with the same year already exists in the annual list
+        AnnualDengueCases *existingNode = findNodeByYear(year);
+
+        if (existingNode != nullptr)
+        {
+            // If a node for the year exists, increment the totalCases by tempTotalCases
+            existingNode->totalCases += tempTotalCases; // Accumulate the total cases for the current year
+        }
+        else
+        {
+            // If no node for the year exists, create a new node
+            AnnualDengueCases *newNode = new AnnualDengueCases(year, tempTotalCases); // Initialize with tempTotalCases cases
+            newNode->next = nullptr;
+
+            if (head == nullptr)
+                head = newNode; // if list is empty, set head to the new node
+            else
+            {
+                AnnualDengueCases *last = head;
+                while (last->next != nullptr)
+                    last = last->next;
+                last->next = newNode;
+            }
+            size++;
+        }
+
+        // Move to the next Dengue case in the list
+        current = current->next;
+    }
+}
+
+AnnualDengueCases *AnnualDengueCasesLinkedList::findNodeByYear(const string &year)
+{
+    AnnualDengueCases *current = head;
+    while (current != nullptr)
+    {
+        if (current->year == year)
+        {
+            return current; // Return the node if found
+        }
+        current = current->next;
+    }
+    return nullptr; // Year not found
+}
+
+void AnnualDengueCasesLinkedList::clear() {
+    AnnualDengueCases* current = head;
+    while (current != nullptr) {
+        AnnualDengueCases* next = current->next;
+        delete current; // Delete the current node
+        current = next;
+    }
+    head = nullptr; // Set head to nullptr to indicate an empty list
+    size = 0; // Reset the size to 0
+}

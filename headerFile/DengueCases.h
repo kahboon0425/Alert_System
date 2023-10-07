@@ -53,7 +53,7 @@ public:
     void findDengueCasesByPatientIdAndName(const string &patientID, const string &patientName);
     int countCasesByAgeAndState(int minAge, int maxAge, const string &minState, const string &maxState);
 
-private:
+public:
     Node *head;
     Node *tail;
     int size;

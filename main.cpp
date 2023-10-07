@@ -58,7 +58,7 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
     int countCase;
 
     ifstream file;
-    string fileName;
+    string fileName =  "csvFile/AnnualDengueCasesByState.csv" ;
     string line;
     string word;
     string rowData;
@@ -269,6 +269,7 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
 
                         dengueCases.insert(Patient(patientId, patientName, patientAge, patientResidence, patientPhoneNo, patientEmergencyContactNo, reportDate, doctorInfo.getUsername()));
                     };
+                    
 
                     continue;
 
@@ -333,7 +334,9 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                 switch (choice)
                 {
                 case 1:
-                    fileName = "csvFile/AnnualDengueCasesByState.csv";
+                    annualDengueCases.clear();
+                    annualDengueCases.addNewDengueCases(dengueCases);
+                    // fileName = "csvFile/AnnualDengueCasesByState.csv";
 
                     // Read data from the CSV file and populate the linked list
                     file.open(fileName);
@@ -355,7 +358,7 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                                     year = token;
                                 }
                                 else if (columnCount >= 2) // Starting from the third column
-                                {                              
+                                {
                                     totalCases += stoi(token); // Convert token to integer and add to totalCases
                                 }
                                 columnCount++;
@@ -366,21 +369,21 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
 
                         file.close();
                         cout << "\n";
-                        cout << ">>>>>>>> Total Dengue Cses by Year >>>>>>>>>>>>\n" << endl;
+                        cout << ">>>>>>>> Total Dengue Cses by Year >>>>>>>>>>>>\n"
+                             << endl;
                         annualDengueCases.displayTotalCases();
                         cout << "\n";
-                        
                     }
                     else
                     {
                         cout << "Could not open the file\n"; // Display an error message if the file couldn't be opened
                     }
 
-                    cout << ">>>>>>>> Bar Chart(scaled by 1000) >>>>>>>>>>>>\n" << endl;
+                    cout << ">>>>>>>> Bar Chart(scaled by 1000) >>>>>>>>>>>>\n"
+                         << endl;
                     annualDengueCases.displayScaledBarChart(1000);
                     cout << "\n";
-                        
-                    
+
                     continue;
                 case 2:
                     fileName = "csvFile/NumberOfDengueFeverCasesWeeklyByState.csv";
@@ -389,7 +392,7 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                     file.open(fileName);
                     if (file.is_open())
                     {
-                    
+
                         // Skip the header line
                         getline(file, line);
 
@@ -410,8 +413,8 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                                 rowData += word; // Append the current field to the row data
                             }
 
-                            annualDengueCases.readCsvFile(rowData);  // Add the complete row data to the linked list
-                            cout << rowData << endl; // Print each row
+                            annualDengueCases.readCsvFile(rowData); // Add the complete row data to the linked list
+                            cout << rowData << endl;                // Print each row
                         }
 
                         file.close();
