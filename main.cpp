@@ -3,16 +3,19 @@
 #include "headerFile/User.h"
 #include "headerFile/Doctor.h"
 #include "headerFile/DengueCases.h"
+#include "headerFile/AnnualDengueCases.h"
 #include "cppFile/MOHAdmin.cpp"
 #include "cppFile/User.cpp"
 #include "cppFile/Doctor.cpp"
 #include "cppFile/DengueCases.cpp"
+#include "cppFile/AnnualDengueCases.cpp"
 
 #include <string> // Add this line to include the <string> header
-
+#include <fstream>
+#include <sstream>
 using namespace std;
 
-void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, Patient &patient)
+void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, Patient &patient, AnnualDengueCasesLinkedList &annualDengueCases)
 {
 
     string admin_username;
@@ -52,6 +55,12 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
     string state1;
     string state2;
     int countCase;
+
+    ifstream file;
+    string fileName;
+    string line;
+    string word;
+    string rowData;
 
     bool returnToAdminMenu = false;
 
@@ -269,13 +278,14 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                     dengueCases.findDengueCasesByPatientIdAndName(searchPatientId, searchPatientName);
                     continue;
                 case 5: // Find Age And State
-                    cout << "<<<<<< Find the number of cases for any given age range and any given state range <<<<<<\n" << endl;
-                    cout << "Enter Age Range >>"<< endl;
+                    cout << "<<<<<< Find the number of cases for any given age range and any given state range <<<<<<\n"
+                         << endl;
+                    cout << "Enter Age Range >>" << endl;
                     cout << "Min Age: ";
                     cin >> minAge;
                     cout << "Max Age: ";
                     cin >> maxAge;
-                    cout << "\nEnter State Range >>"<< endl;
+                    cout << "\nEnter State Range >>" << endl;
                     cout << "State 1: ";
                     cin >> state1;
                     cout << "State 2: ";
@@ -316,8 +326,46 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                 switch (choice)
                 {
                 case 1:
-                    // code
-                    break;
+                    fileName = "csvFile/AnnualDengueCasesByState.csv";
+
+                    // Read data from the CSV file and populate the linked list
+                    file.open(fileName);
+                    if (file.is_open())
+                    {
+                        string line;
+                        // Skip the header line
+                        getline(file, line);
+                       
+                        cout << "Year\tAge\tJHR\tKDH\tKTN\tMLK\tN.S\tPHG\tPRK\tPLS\tP.P\tSBH\tSWK\tSGR\tTRG\tKL\tLBN" << endl;
+                        cout << "------------------------------------------------------------------------------------------------------------------------------------"<< endl;;
+
+
+                        while (getline(file, line))
+                        {
+                            stringstream str(line);
+                            string rowData;
+
+                            while (getline(str, word, ',')) // Split the line into fields separated by commas
+                            {
+                                if (!rowData.empty())
+                                {
+                                    rowData += "\t"; // Add a comma if it's not the first field in the row
+                                }
+                                rowData += word; // Append the current field to the row data
+                            }
+
+                            annualDengueCases.readCsvFile(rowData);           // Add the complete row data to the linked list
+                            cout << rowData << endl; // Print each row
+                        }
+
+                        file.close();
+                    }
+                    else
+                    {
+                        cout << "Could not open the file\n"; // Display an error message if the file couldn't be opened
+                    }
+
+                    continue;
                 case 2:
                     // code
                     break;
@@ -370,10 +418,11 @@ int main()
     Doctor doctor;
     DengueCasesLinkedList dengueCases;
     Patient patient;
+    AnnualDengueCasesLinkedList annualDengueCases;
 
     while (true)
     {
-        mainMenu(admin, doctor, dengueCases, patient);
+        mainMenu(admin, doctor, dengueCases, patient, annualDengueCases);
     }
 
     return 0;

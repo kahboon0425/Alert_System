@@ -1,18 +1,6 @@
- cout << "Enter patient's Id: ";
-                        cin.ignore();
-                        getline(cin, patientId);
-                        cout << "Enter patient's name: ";
-                        cin.ignore();
-                        getline(cin, patientName);
-                        cout << "Enter patient's age: ";
-                        cin >> patientAge;
-                        cout << "Enter patient's residence: ";
-                        cin.ignore();
-                        getline(cin, patientResidence);
-                        cout << "Enter patient's phone number: ";
-                        cin >> patientPhoneNo;
-                        cout << "Enter patient's emergency contact number: ";
-                        cin >> patientEmergencyContactNo;
-                        cout << "Enter a date in YYYY-MM-DD format: ";
-                        cin.ignore();
-                        getline(cin, reportDate);
+  // annualDengueCases *current = annualDengueCases.head;
+                        // while (current)
+                        // {
+                        //     cout << current->data << endl; // Print each row
+                        //     current = current->next;       // Move to the next row
+                        // }
