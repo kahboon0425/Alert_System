@@ -339,33 +339,9 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                     file.open(fileName);
                     if (file.is_open())
                     {
-                        string line;
+                        // string line;
                         // Skip the header line
                         getline(file, line);
-
-                        cout << "Year\tAge\tJHR\tKDH\tKTN\tMLK\tN.S\tPHG\tPRK\tPLS\tP.P\tSBH\tSWK\tSGR\tTRG\tKL\tLBN" << endl;
-                        cout << "------------------------------------------------------------------------------------------------------------------------------------" << endl;
-                        ;
-
-                        // while (getline(file, line))
-                        // {
-                        //     stringstream str(line);
-                        //     string rowData;
-
-                        //     while (getline(str, word, ',')) // Split the line into fields separated by commas
-                        //     {
-                        //         if (!rowData.empty())
-                        //         {
-                        //             rowData += "\t"; // Add a comma if it's not the first field in the row
-                        //         }
-                        //         rowData += word; // Append the current field to the row data
-                        //     }
-
-                        //     annualDengueCases.readCsvFile(rowData);           // Add the complete row data to the linked list
-                        //     cout << rowData << endl; // Print each row
-                        // }
-
-                        // file.close();
 
                         while (getline(file, line))
                         {
@@ -379,25 +355,27 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                                 { // Year is in the first column
                                     year = token;
                                 }
-                                else if (columnCount >= 2)
-                                {                              // Starting from the third column
+                                else if (columnCount >= 2) // Starting from the third column
+                                {                              
                                     totalCases += stoi(token); // Convert token to integer and add to totalCases
                                 }
                                 columnCount++;
                             }
 
                             // Add the totalCases to the map, grouped by year
-                            totalCasesByYear[year] += totalCases;
+                            // totalCasesByYear[year] += totalCases;
+                            annualDengueCases.readCsvFileAnnualCases(year, totalCases);
                         }
 
                         file.close();
+                        annualDengueCases.display();
 
-                        // Display the total cases by year
-                        cout << "Year\tTotal Cases" << endl;
-                        for (const auto &entry : totalCasesByYear)
-                        {
-                            cout << entry.first << "\t" << entry.second << endl;
-                        }
+                        // // Display the total cases by year
+                        // cout << "Year\tTotal Cases" << endl;
+                        // for (const auto &entry : totalCasesByYear)
+                        // {
+                        //     cout << entry.first << "\t" << entry.second << endl;
+                        // }
                     }
                     else
                     {
@@ -407,8 +385,40 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                     
                     continue;
                 case 2:
-                    // code
-                    break;
+                    fileName = "csvFile/NumberOfDengueFeverCasesWeeklyByState.csv";
+
+                    // Read data from the CSV file and populate the linked list
+                    file.open(fileName);
+                    if (file.is_open())
+                    {
+                        // string line;
+                        // Skip the header line
+                        getline(file, line);
+
+                        cout << "Year\tWeek\tJHR\tKDH\tKTN\tMLK\tN.S\tPHG\tPRK\tPLS\tP.P\tSBH\tSWK\tSGR\tTRG\tKL\tLBN" << endl;
+                        cout << "------------------------------------------------------------------------------------------------------------------------------------" << endl;
+
+                        while (getline(file, line))
+                        {
+                            stringstream str(line);
+                            string rowData;
+
+                            while (getline(str, word, ',')) // Split the line into fields separated by commas
+                            {
+                                if (!rowData.empty())
+                                {
+                                    rowData += "\t"; // Add a comma if it's not the first field in the row
+                                }
+                                rowData += word; // Append the current field to the row data
+                            }
+
+                            annualDengueCases.readCsvFile(rowData);           // Add the complete row data to the linked list
+                            cout << rowData << endl; // Print each row
+                        }
+
+                        file.close();
+                    }
+                    continue;
                 case 3:
                     // code
                     break;

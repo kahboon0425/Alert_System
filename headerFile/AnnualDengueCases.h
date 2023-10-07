@@ -24,10 +24,14 @@ struct AnnualDengueCases
     // string TerengganuState;
     // string KLState;
     // string LabuanState;
+    
     string data;
+    string year;
+    int totalCases;
     AnnualDengueCases *next;
     AnnualDengueCases(){};
-    AnnualDengueCases(const string& rowData);
+    // AnnualDengueCases(const string& rowData);
+    AnnualDengueCases(const string &yearParam, int &totalCasesParam);
 
     // AnnualDengueCases(int &year, string &ageGroup,
     //                   string &Johorstate,
@@ -56,10 +60,14 @@ public:
     // ~AnnualDengueCasesLinkedList();
 
     void readCsvFile(const string& rowData);
+    void readCsvFileAnnualCases(const string &year, int &totalCases);
+    void display();
 
 public:
     AnnualDengueCases *head;
     int size;
 };
+
+
 
 #endif
