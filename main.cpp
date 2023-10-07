@@ -14,6 +14,7 @@
 #include <fstream>
 #include <sstream>
 using namespace std;
+#include <map>
 
 void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, Patient &patient, AnnualDengueCasesLinkedList &annualDengueCases)
 {
@@ -61,6 +62,12 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
     string line;
     string word;
     string rowData;
+
+    string year;
+    string token;
+    int totalCases;
+    int columnCount;
+    map<string, int> totalCasesByYear;
 
     bool returnToAdminMenu = false;
 
@@ -335,36 +342,69 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                         string line;
                         // Skip the header line
                         getline(file, line);
-                       
-                        cout << "Year\tAge\tJHR\tKDH\tKTN\tMLK\tN.S\tPHG\tPRK\tPLS\tP.P\tSBH\tSWK\tSGR\tTRG\tKL\tLBN" << endl;
-                        cout << "------------------------------------------------------------------------------------------------------------------------------------"<< endl;;
 
+                        cout << "Year\tAge\tJHR\tKDH\tKTN\tMLK\tN.S\tPHG\tPRK\tPLS\tP.P\tSBH\tSWK\tSGR\tTRG\tKL\tLBN" << endl;
+                        cout << "------------------------------------------------------------------------------------------------------------------------------------" << endl;
+                        ;
+
+                        // while (getline(file, line))
+                        // {
+                        //     stringstream str(line);
+                        //     string rowData;
+
+                        //     while (getline(str, word, ',')) // Split the line into fields separated by commas
+                        //     {
+                        //         if (!rowData.empty())
+                        //         {
+                        //             rowData += "\t"; // Add a comma if it's not the first field in the row
+                        //         }
+                        //         rowData += word; // Append the current field to the row data
+                        //     }
+
+                        //     annualDengueCases.readCsvFile(rowData);           // Add the complete row data to the linked list
+                        //     cout << rowData << endl; // Print each row
+                        // }
+
+                        // file.close();
 
                         while (getline(file, line))
                         {
-                            stringstream str(line);
-                            string rowData;
+                            stringstream ss(line);
+                            totalCases = 0;
+                            columnCount = 0;
 
-                            while (getline(str, word, ',')) // Split the line into fields separated by commas
+                            while (getline(ss, token, ','))
                             {
-                                if (!rowData.empty())
-                                {
-                                    rowData += "\t"; // Add a comma if it's not the first field in the row
+                                if (columnCount == 0)
+                                { // Year is in the first column
+                                    year = token;
                                 }
-                                rowData += word; // Append the current field to the row data
+                                else if (columnCount >= 2)
+                                {                              // Starting from the third column
+                                    totalCases += stoi(token); // Convert token to integer and add to totalCases
+                                }
+                                columnCount++;
                             }
 
-                            annualDengueCases.readCsvFile(rowData);           // Add the complete row data to the linked list
-                            cout << rowData << endl; // Print each row
+                            // Add the totalCases to the map, grouped by year
+                            totalCasesByYear[year] += totalCases;
                         }
 
                         file.close();
+
+                        // Display the total cases by year
+                        cout << "Year\tTotal Cases" << endl;
+                        for (const auto &entry : totalCasesByYear)
+                        {
+                            cout << entry.first << "\t" << entry.second << endl;
+                        }
                     }
                     else
                     {
                         cout << "Could not open the file\n"; // Display an error message if the file couldn't be opened
                     }
 
+                    
                     continue;
                 case 2:
                     // code
