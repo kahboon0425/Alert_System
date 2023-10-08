@@ -25,7 +25,7 @@ struct AnnualDengueCases
     // string KLState;
     // string LabuanState;
     
-    string data;
+    // string data;
     string year;
     int totalCases;
     AnnualDengueCases *next;
@@ -59,7 +59,7 @@ public:
     AnnualDengueCasesLinkedList();
     // ~AnnualDengueCasesLinkedList();
 
-    void readCsvFile(const string& rowData);
+    // void readCsvFile(const string& rowData);
     void readCsvFileAnnualCases(const string &year, int &totalCases);
     void addNewDengueCases(const DengueCasesLinkedList& dengueCasesList);
     void displayTotalCases();

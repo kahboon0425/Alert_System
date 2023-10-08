@@ -4,11 +4,13 @@
 #include "headerFile/Doctor.h"
 #include "headerFile/DengueCases.h"
 #include "headerFile/AnnualDengueCases.h"
+#include "headerFile/WeeklyDengueCases.h"
 #include "cppFile/MOHAdmin.cpp"
 #include "cppFile/User.cpp"
 #include "cppFile/Doctor.cpp"
 #include "cppFile/DengueCases.cpp"
 #include "cppFile/AnnualDengueCases.cpp"
+#include "cppFile/WeeklyDengueCases.cpp"
 
 #include <string> // Add this line to include the <string> header
 #include <fstream>
@@ -16,7 +18,7 @@
 using namespace std;
 #include <map>
 
-void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, Patient &patient, AnnualDengueCasesLinkedList &annualDengueCases)
+void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, Patient &patient, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases)
 {
 
     string admin_username;
@@ -58,7 +60,7 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
     int countCase;
 
     ifstream file;
-    string fileName =  "csvFile/AnnualDengueCasesByState.csv" ;
+    string fileName;
     string line;
     string word;
     string rowData;
@@ -336,7 +338,7 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                 case 1:
                     annualDengueCases.clear();
                     annualDengueCases.addNewDengueCases(dengueCases);
-                    // fileName = "csvFile/AnnualDengueCasesByState.csv";
+                    fileName = "csvFile/AnnualDengueCasesByState.csv";
 
                     // Read data from the CSV file and populate the linked list
                     file.open(fileName);
@@ -413,12 +415,14 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
                                 rowData += word; // Append the current field to the row data
                             }
 
-                            annualDengueCases.readCsvFile(rowData); // Add the complete row data to the linked list
+                            weeklyDengueCases.readCsvFile(rowData); // Add the complete row data to the linked list
                             cout << rowData << endl;                // Print each row
                         }
 
                         file.close();
                     }
+
+                   
                     continue;
                 case 3:
                     // code
@@ -470,10 +474,11 @@ int main()
     DengueCasesLinkedList dengueCases;
     Patient patient;
     AnnualDengueCasesLinkedList annualDengueCases;
+    WeeklyDengueCasesLinkedList weeklyDengueCases;
 
     while (true)
     {
-        mainMenu(admin, doctor, dengueCases, patient, annualDengueCases);
+        mainMenu(admin, doctor, dengueCases, patient, annualDengueCases, weeklyDengueCases);
     }
 
     return 0;
