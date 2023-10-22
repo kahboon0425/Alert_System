@@ -18,6 +18,12 @@ public:
     string getResidence();
     int getPhoneNo();
 
+    // Setter
+    string setUsername(const string &username);
+    string setPassword(const string &password);
+    string setResidence(const string &residence);
+    int setPhoneNo(const int &phoneNo);
+
 private:
     string userUsername;
     string userPassword;

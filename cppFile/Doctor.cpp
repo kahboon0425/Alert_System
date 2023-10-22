@@ -11,7 +11,6 @@ Doctor::Doctor(const string &username, const string &password, const string &res
     userPassword = password;
     userResidence = residence;
     userPhoneNo = phoneNo;
-
 }
 
 string Doctor::getUsername()
@@ -34,6 +33,26 @@ int Doctor::getPhoneNo()
     return userPhoneNo;
 }
 
+string Doctor::setUsername(const string &username)
+{
+    userUsername = username;
+}
+
+string Doctor::setPassword(const string &password)
+{
+    userPassword = password;
+}
+
+string Doctor::setResidence(const string &residence)
+{
+    userResidence = residence;
+}
+
+int Doctor::setPhoneNo(const int &phoneNo)
+{
+    userPhoneNo = phoneNo;
+}
+
 bool Doctor::login(const string &username, const string &password)
 {
     return (username == userUsername && password == userPassword);
@@ -46,7 +65,3 @@ void Doctor::modifyProfile(const string &newUsername, const string &newPassword,
     userResidence = newResidence;
     userPhoneNo = newPhoneNo;
 }
-
-
-
-

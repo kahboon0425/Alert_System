@@ -6,7 +6,7 @@
 #include "headerFile/DengueCases.h"
 #include "headerFile/AnnualDengueCases.h"
 #include "headerFile/WeeklyDengueCases.h"
-// #include "cppFile/MOHAdmin.cpp"
+#include "cppFile/MOHAdmin.cpp"
 #include "cppFile/User.cpp"
 #include "cppFile/Doctor.cpp"
 #include "cppFile/DengueCases.cpp"
@@ -19,9 +19,9 @@ using namespace std;
 void displayMainMenu();
 void loginAsUser(Admin &admin, User &user);
 void loginAsDoctor(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases);
-void loginAsAdmin(Admin &admin);
+void loginAsAdmin(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases);
 
-void userMenu(User &user);
+void userMenu(Admin &admin, User &user);
 void doctorMenu(Doctor &doctor, Admin &admin, DengueCasesLinkedList &dengueCases);
 void adminMenu(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases);
 
@@ -45,8 +45,8 @@ int main()
         {
         case 1:
         {
+            // calling the function
             loginAsUser(admin, user);
-            // userMenu(user);
             break;
         }
         case 2:
@@ -57,8 +57,8 @@ int main()
         }
         case 3:
         {
-            loginAsAdmin(admin);
-            adminMenu(admin, annualDengueCases, weeklyDengueCases, dengueCases);
+            loginAsAdmin(admin, annualDengueCases, weeklyDengueCases, dengueCases);
+
             break;
         }
         default:
@@ -93,7 +93,8 @@ void loginAsUser(Admin &admin, User &user)
     {
         cout << "\nLogin Successfully.\n"
              << endl;
-        user = admin.getUserInfo(user_username);
+        User userInfo = admin.getUserInfo(user_username);
+        userMenu(admin, userInfo);
     }
     else
     {
@@ -125,7 +126,7 @@ void loginAsDoctor(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCa
     }
 }
 
-void loginAsAdmin(Admin &admin)
+void loginAsAdmin(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases)
 {
     string admin_username;
     string admin_password;
@@ -138,6 +139,7 @@ void loginAsAdmin(Admin &admin)
     if (admin.login(admin_username, admin_password))
     {
         cout << "Login Successfully." << endl;
+        adminMenu(admin, annualDengueCases, weeklyDengueCases, dengueCases);
     }
     else
     {
@@ -145,12 +147,78 @@ void loginAsAdmin(Admin &admin)
     }
 }
 
-void userMenu(User &user)
+void userMenu(Admin &admin, User &userInfo)
 {
+    int userMenu;
+    string newUsername;
+    string newPassword;
+    string newResidence;
+    int newPhoneNo;
     while (true)
     {
-        cout << "User menu - Implement your options here" << endl;
-        // Implement user menu options and logic
+        cout << "\n-------- User Menu --------\n"
+             << endl;
+        cout << "1. Manage Personal Information \n2. View Total Dengue Cases \n3. View Daily Dengue Cases \n4. View Dengue Alert Messages \n5. Search Status \n6. Logout \n\nEnter your choice: ";
+        cin >> userMenu;
+
+        switch (userMenu)
+        {
+        case 1: // Manage Personal Information
+            cout << "\n<<<<< Welcome to your profile <<<<<" << endl;
+            cout << ">>>>> User Profile >>>>>>\n";
+            cout << "Username: " << userInfo.getUsername() << endl;
+            cout << "Password: " << userInfo.getPassword() << endl;
+            cout << "Residence: " << userInfo.getResidence() << endl;
+            cout << "Phone Number: " << userInfo.getPhoneNo() << endl;
+
+            cout << "\n >>>> Options >>>>\n";
+            cout << "\n1. Modify Username \n2. Modify Password \n3. Modify Residence \n4. Modify Phone Number \n5. Logout\n\nEnter your choice: ";
+
+            int modifyProfileInfo;
+            cin >> modifyProfileInfo;
+
+            switch (modifyProfileInfo)
+            {
+            case 1:
+                cout << "Enter new username: ";
+                cin >> newUsername;
+                admin.updateUserInformation(userInfo.getUsername(), newUsername, userInfo.getPassword(), userInfo.getResidence(), userInfo.getPhoneNo());
+                break;
+            case 2:
+                cout << "Enter new password: ";
+                cin >> newPassword;
+                admin.updateUserInformation(userInfo.getUsername(), userInfo.getUsername(), newPassword, userInfo.getResidence(), userInfo.getPhoneNo());
+                break;
+            case 3:
+                cout << "Enter new residence: ";
+                cin >> newResidence;
+                admin.updateUserInformation(userInfo.getUsername(), userInfo.getUsername(), userInfo.getPassword(), newResidence, userInfo.getPhoneNo());
+                break;
+            case 4:
+                cout << "Enter new phone number: ";
+                cin >> newPhoneNo;
+                admin.updateUserInformation(userInfo.getUsername(), userInfo.getUsername(), userInfo.getPassword(), userInfo.getResidence(), newPhoneNo);
+                break;
+            case 5:
+                break;
+            }
+            continue;
+
+        case 2: // View Total Dengue Cases
+            // code
+            break;
+        case 3: // View Daily Dengue Cases
+            // code
+            break;
+        case 4: // View Dengue Alert Messages
+            // code
+            break;
+        case 5: // Search Status
+            // code
+            break;
+        case 6: // Logout
+            return;
+        }
     }
 }
 

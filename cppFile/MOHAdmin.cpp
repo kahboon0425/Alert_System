@@ -124,7 +124,7 @@ void Admin::updateDoctorInformation(const string& dUsername, const string& dNewU
         if (doctorContainer[i].getUsername() == dUsername) {
             // Update the user's information
             doctorContainer[i].modifyProfile(dNewUsername, dNewPassword, dNewResidence, dNewPhoneNo);
-  
+            cout << "Profile information updated successfully.\n" << endl;
             return;
         }
     }

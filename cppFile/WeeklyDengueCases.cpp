@@ -32,4 +32,9 @@ void WeeklyDengueCasesLinkedList::readCsvFile(const std::string& rowData) {
     }
     size++;
 }
+// View Weekly dengue cases in all state sort by case number
+void WeeklyDengueCasesLinkedList::viewWeeklyCasesSortByCaseNumber(const string &year, const int &week){
+    
+
+}
 

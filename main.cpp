@@ -71,6 +71,9 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
     int columnCount;
     map<string, int> totalCasesByYear;
 
+    string yearForWeeklyCases;
+    int week;
+
     bool returnToAdminMenu = false;
 
     cout << "\n----------- DENGUE FEVER SURVEILLANCE AND ALERT SYSTEM -----------\n"
@@ -388,7 +391,15 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
 
                     continue;
                 case 2:
+                    cout << "Which Year, and Week of data you want to view?: "<< endl;
+                    cout << "Year: "<<endl;
+                    cin >> yearForWeeklyCases;
+                    cout >> "Week: "<<endl;
+                    cin >> week;
+
                     fileName = "csvFile/NumberOfDengueFeverCasesWeeklyByState.csv";
+
+                    
 
                     // Read data from the CSV file and populate the linked list
                     file.open(fileName);

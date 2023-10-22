@@ -21,6 +21,10 @@ public:
     WeeklyDengueCasesLinkedList();
 
     void readCsvFile(const string& rowData);
+    void viewWeeklyCasesSortByCaseNumber(const string& year, const int &week);
+    void addWeeklyCases();
+    void sendAlert();
+
 
 public:
     WeeklyDengueCases *head;
