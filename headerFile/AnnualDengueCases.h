@@ -7,13 +7,13 @@ using namespace std;
 // define node
 struct AnnualDengueCases
 {
-    std::string year;
-    std::string state;
+    string year;
+    int state;
     int totalCases;
     AnnualDengueCases *next;
     AnnualDengueCases(){};
-    AnnualDengueCases(const std::string &yearParam, const std::string &stateParam, int totalCasesParam);
-    AnnualDengueCases(const std::string &yearParam, int totalCasesParam);
+    AnnualDengueCases(const string &yearParam, const int &stateParam, int totalCasesParam);
+    AnnualDengueCases(const string &yearParam, int totalCasesParam);
 };
 
 // define node
@@ -37,9 +37,9 @@ public:
 
     // void readCsvFile(const string& rowData);
     void readCsvFileAnnualCases(const string &year, int &totalCases);
-    void readCsvFileAnnualCases(const string &year, const string &state, int totalCases);
+    void readCsvFileAnnualCases(const string &year, const int &state, int totalCases);
     void addNewDengueCases(const DengueCasesLinkedList &dengueCasesList);
-    void displayTotalCasesBasedOnYearAndState(const string &year, const string &state);
+    void displayTotalCasesBasedOnYearAndState(const string &year, const int &state);
 
     void displayTotalCases();
     void displayScaledBarChart(int scaleFactor);

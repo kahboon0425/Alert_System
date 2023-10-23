@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <ctime>
-#include <map> 
+#include <map>
 #include "headerFile/MOHAdmin.h"
 #include "headerFile/User.h"
 #include "headerFile/Doctor.h"
@@ -172,9 +172,9 @@ void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases, 
     string token;
     int columnCount;
     string selectedYear;
-    string selectedState;
-    map<int, string> stateColumns; // Declare the map here
+    int selectedState;
     string column;
+    int state;
 
     while (true)
     {
@@ -228,51 +228,20 @@ void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases, 
 
         case 2: // View Total Dengue Cases
             annualDengueCases.clear();
-            annualDengueCases.addNewDengueCases(dengueCases);
             fileName = "csvFile/AnnualDengueCasesByState.csv";
 
             // Read data from the CSV file and populate the linked list
             file.open(fileName);
             if (file.is_open())
             {
-                // map<int, string> stateColumns; // Declare the map here
-
                 getline(file, line); // Skip the header line
 
-                // Parse the header to get the state names
-                stringstream headerStream(line);
-                // Map column index to state name
-                int columnIndex = 0;
-
-                while (getline(headerStream, column, ','))
-                {
-                    if (columnIndex >= 2)
-                    {
-                        stateColumns[columnIndex] = column;
-                    }
-                    columnIndex++;
-                }
-
-                // Get user input for the year and state
-                string selectedYear;
-                string selectedState;
-
-                cout << "Enter Year: ";
-                cin >> selectedYear;
-
-                cout << "Enter State: ";
-                cin >> selectedState;
-
-                bool yearFound = false;
-
-                // Process data rows
                 while (getline(file, line))
                 {
                     stringstream ss(line);
-                    int columnCount = 0;
-                    string token;
-                    string year;
-                    int totalCases = 0;
+                    totalCases = 0;
+                    columnCount = 0;
+                    state = 0;
 
                     while (getline(ss, token, ','))
                     {
@@ -282,33 +251,32 @@ void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases, 
                         }
                         else if (columnCount >= 2)
                         {
-                            totalCases += stoi(token);
-                        }
-                        columnCount++;
-                    }
-
-                    // Check if the year matches the selected year
-                    if (year == selectedYear)
-                    {
-                        yearFound = true;
-                        string state = stateColumns[columnCount - 1]; // Get the state name from the map
-                        if (state == selectedState)
-                        {
+                            totalCases += stoi(token); // Total cases for a specific state
+                            state = columnCount - 1;   // Calculate the state index
                             annualDengueCases.readCsvFileAnnualCases(year, state, totalCases);
                         }
+                        totalCases = 0;
+                        
+
+                        columnCount++;
                     }
                 }
 
-                if (!yearFound)
-                {
-                    cout << "Selected year not found in the data" << endl;
-                }
-                else
-                {
-                    annualDengueCases.displayTotalCasesBasedOnYearAndState(selectedYear, selectedState);
-                }
+                file.close();
             }
-            file.close();
+            else
+            {
+                cout << "Could not open the file\n"; // Display an error message if the file couldn't be opened
+            }
+
+            cout << "Enter Year: ";
+            cin >> selectedYear;
+
+            cout << "\n(1) Johor\n(2) Kedah\n(3) Kelantan\n(4) Melaka\n(5) Negeri Sembilan\n(6) Pahang\n(7) Perak\n(8) Perlis\n(9) Pulau Pinang\n(10) Sabah\n(11) Sarawak\n(12) Selangor\n(13) Terengganu\n(14) Kuala Lumpur\n(15) Labuan\nEnter State No: ";
+
+            cin >> selectedState;
+
+            annualDengueCases.displayTotalCasesBasedOnYearAndState(selectedYear, selectedState);
             continue;
 
         case 3: // View Daily Dengue Cases

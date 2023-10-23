@@ -9,19 +9,18 @@ using namespace std;
 //     totalCases = totalCasesParam;
 //     next = nullptr;
 // }
-AnnualDengueCases::AnnualDengueCases(const std::string &yearParam, const std::string &stateParam, int totalCasesParam)
+AnnualDengueCases::AnnualDengueCases(const string &yearParam, const int &stateParam, int totalCasesParam)
     : year(yearParam), state(stateParam), totalCases(totalCasesParam), next(nullptr)
 {
 }
 
-AnnualDengueCases::AnnualDengueCases(const std::string &yearParam, int totalCasesParam) {
+AnnualDengueCases::AnnualDengueCases(const std::string &yearParam, int totalCasesParam)
+{
     // Initialize the fields of the AnnualDengueCases object here
     year = yearParam;
     totalCases = totalCasesParam;
     // Any other necessary initialization
 }
-
-
 
 AnnualDengueCasesLinkedList::AnnualDengueCasesLinkedList()
 {
@@ -70,17 +69,11 @@ void AnnualDengueCasesLinkedList::readCsvFileAnnualCases(const string &year, int
     size++;
 }
 
-void AnnualDengueCasesLinkedList::readCsvFileAnnualCases(const string &year, const string &state, int totalCases)
+void AnnualDengueCasesLinkedList::readCsvFileAnnualCases(const string &year, const int &state, int totalCases)
 {
     // Create a new node to store the data
     // AnnualDengueCases *newNode = new AnnualDengueCases(year, state, totalCases);
     AnnualDengueCases *newNode = new AnnualDengueCases;
-    newNode->year = year;
-    newNode->state = state;
-    newNode->totalCases = totalCases;
-    newNode->next = nullptr;
-
-    // Initialize the new node's members with the provided values
     newNode->year = year;
     newNode->state = state;
     newNode->totalCases = totalCases;
@@ -100,19 +93,22 @@ void AnnualDengueCasesLinkedList::readCsvFileAnnualCases(const string &year, con
     size++;
 }
 
-void AnnualDengueCasesLinkedList::displayTotalCasesBasedOnYearAndState(const string &year, const string &state)
+void AnnualDengueCasesLinkedList::displayTotalCasesBasedOnYearAndState(const string &year, const int &state)
 {
     AnnualDengueCases *current = head;
     int totalCasesForYearAndState = 0;
     while (current)
     {
+
         if (current->year == year && current->state == state)
         {
             totalCasesForYearAndState += current->totalCases;
         }
+
         current = current->next;
     }
     cout << "Year: " << year << ", State: " << state << ", Total Cases: " << totalCasesForYearAndState << endl;
+    totalCasesForYearAndState = 0;
 }
 
 void AnnualDengueCasesLinkedList::displayTotalCases()
@@ -127,7 +123,7 @@ void AnnualDengueCasesLinkedList::displayTotalCases()
         // checks if the year in the current node is different from the previously encountered year = indication it has moved to a new year's data
         if (current->year != currentYear)
         {
-            
+
             if (!currentYear.empty())
             {
                 cout << "Year: " << currentYear << ", Total Cases: " << totalCasesForYear << endl;
