@@ -15,10 +15,15 @@ public:
     // Admin Login
     bool login(const string& username, const string& password);
     // Manage User Account
-    void createUser(const string& uUsername, const string& uPassword, const string& uResidence, const int& uPhoneNo);
+    void createUser(const string& uUsername, const string& uPassword, const string& uResidence, const int& uPhoneNo, time_t loginTime);
     bool userLogin(const string& username, const string& password);
     User getUserInfo(const string& username);
     void updateUserInformation(const string& username, const string& newUsername, const string& newPassword, const string& newResidence, const int newPhoneNo);
+    void checkInactivity();
+    void printAllUsers();
+    void deleteUserAtIndex(int index);
+
+
 
     // Manage Doctor Account
     void createDoctor(const string& dUsername, const string& dPassword, const string& dResidence, const int& dPhoneNo);

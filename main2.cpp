@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <ctime>
 #include "headerFile/MOHAdmin.h"
 #include "headerFile/User.h"
 #include "headerFile/Doctor.h"
@@ -400,7 +401,7 @@ void adminMenu(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, Wee
     {
         cout << "------------------ Admin Menu ------------------\n"
              << endl;
-        cout << "1. View Total Dengue Cases \n2. View Weekly Dengue Cases \n3. Send Alert Message \n4. Manage Doctor Account \n5. Manage User Account \n6. Logout \n\nEnter your choice: ";
+        cout << "1. View Total Dengue Cases \n2. View Weekly Dengue Cases \n3. Send Alert Message \n4. Manage Doctor Account \n5. Manage User Account \n6. Delete Inactive User Account \n7. Logout \n\nEnter your choice: ";
 
         int adminChoice;
         cin >> adminChoice;
@@ -565,10 +566,25 @@ void adminMenu(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, Wee
             cin >> user_residence;
             cout << "Phone Number: ";
             cin >> user_phoneNo;
-            admin.createUser(user_username, user_password, user_residence, user_phoneNo);
+            admin.createUser(user_username, user_password, user_residence, user_phoneNo, 0);
             break;
         }
         case 6:
+        {
+
+            time_t fifteenDaysAgo = time(NULL) - (15 * 24 * 60 * 60); // 15 days in seconds
+            admin.createUser("user1", "password1", "residence1", 012, fifteenDaysAgo);
+            admin.createUser("user2", "password2", "residence2", 016, fifteenDaysAgo);
+
+            cout << "\nAll Registered Users:\n" << endl;
+            admin.printAllUsers();
+            // Call the checkInactivity function to check for inactive users
+            admin.checkInactivity();
+            cout << "\nAll Registered Users after removing the inactive one:\n" << endl;
+            admin.printAllUsers();
+            break;
+        }
+        case 7:
         {
             return;
         }
