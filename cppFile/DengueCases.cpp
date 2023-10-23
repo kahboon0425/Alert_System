@@ -1,6 +1,6 @@
 #include <iostream>
 #include "../headerFile/DengueCases.h"
-#include <iomanip> 
+#include <iomanip>
 #include <sstream>
 
 using namespace std;
@@ -108,7 +108,8 @@ void DengueCasesLinkedList::print()
     }
 }
 
-bool DengueCasesLinkedList::isValidDate(const string &dateStr, const string &format) {
+bool DengueCasesLinkedList::isValidDate(const string &dateStr, const string &format)
+{
     tm tm = {};
     istringstream ss(dateStr);
     ss >> get_time(&tm, format.c_str());
@@ -117,157 +118,30 @@ bool DengueCasesLinkedList::isValidDate(const string &dateStr, const string &for
     return !ss.fail();
 }
 
+int DengueCasesLinkedList::countCasesByAgeAndState(int minAge, int maxAge, const string &minState, const string &maxState) {
+        int caseCount = 0;
+        Node *current = head;
 
+        while (current!= nullptr) {
+            const Patient &record = current->data;
+            int age = record.getPatientAge();
+            string state = record.getPatientResidence();
 
+            if (age >= minAge && age <= maxAge && state >= minState && state <= maxState) {
+                caseCount++;
+            }
 
-// void DengueCasesLinkedList::findLatestCaseByDoctor(const string &doctorUsername)
-// {
-//     // Initialize an array to store matching cases
-//     const int maxCases = 100; // Assuming a maximum of 100 matching cases, adjust as needed
-//     Patient *matchingCases[maxCases];
-//     int numMatchingCases = 0; // Initialize the count of matching cases to zero
+            current = current->next;
+        }
 
-//     Node *current = head; // Initialize a pointer to traverse the linked list.
-
-//     while (current != nullptr)
-//     {
-//         const Patient &record = current->data; // Get the patient record at the current node.
-
-//         // Check if the patient's doctor matches the target doctor
-//         if (record.getDoctorReported() == doctorUsername)
-//         {
-//             string currentDateStr = record.getDateReported(); // Get the date string from the patient record.
-
-//             // Parse the date string into a tm struct
-//             tm currentDate = {}; // Create a tm struct to hold the parsed date.
-//             istringstream dateStream(currentDateStr); // Create a string stream for parsing.
-//             dateStream >> get_time(&currentDate, "%Y-%m-%d"); // Parse the date string.
-
-//             if (!dateStream.fail()) // Check if the date parsing was successful.
-//             {
-//                 // Store the matching case in the array
-//                 matchingCases[numMatchingCases++] = new Patient(record);
-//                 // Ensure you don't exceed the maximum number of cases
-//                 if (numMatchingCases >= maxCases)
-//                 {
-//                     break;
-//                 }
-//             }
-//         }
-
-//         current = current->next; // Move to the next node in the linked list.
-//     }
-
-//     // Check if any matching cases were found
-//     if (numMatchingCases > 0)
-//     {
-//         cout << ">>>>>> Matching Cases Found: >>>>>>\n" << endl;
-
-//         // Iterate through the matching cases array and print each case
-//         for (int i = 0; i < numMatchingCases; ++i)
-//         {
-
-//             const Patient &caseRecord = *matchingCases[i];
-//             cout << ">>>>>> Latest Case Found: >>>>>>\n" << endl;
-//             cout << "Patient Id: " << caseRecord.getPatientId() << endl;
-//             cout << "Patient Name: " << caseRecord.getPatientName() << endl;
-//             cout << "Patient Age: " << caseRecord.getPatientAge() << endl;
-//             cout << "Patient Residence: " << caseRecord.getPatientResidence() << endl;
-//             cout << "Patient Phone No: " << caseRecord.getPatientPhoneNo() << endl;
-//             cout << "Patient Emergency Contact: " << caseRecord.getPatientEmergencyContactNo() << endl;
-//             cout << "Date Reported: " << caseRecord.getDateReported() << endl;
-//             cout << "Doctor Reported: " << caseRecord.getDoctorReported() << endl;
-//             // Don't forget to deallocate memory for each case
-//             delete matchingCases[i];
-//         }
-//     }
-//     else
-//     {
-//         cout << "\nNo cases found for doctor: " << doctorUsername << endl;
-//     }
-// }
-
-// void DengueCasesLinkedList::findLatestCaseByDoctor(const string &doctorUsername)
-// {
-//     Patient latestCase; // Initialize a variable to store the latest patient case.
-//     bool found = false; // Initialize a boolean flag to track if a case is found.
-//     Node *current = head; // Initialize a pointer to traverse the linked list.
-
-//     while (current != nullptr)
-//     {
-//         const Patient &record = current->data; // Get the patient record at the current node.
-
-//         // Check if the patient's doctor matches the target doctor
-//         if (record.getDoctorReported() == doctorUsername)
-//         {
-//             string currentDateStr = record.getDateReported(); // Get the date string from the patient record.
-
-//             // Parse the date string into a tm struct
-//             tm currentDate = {}; // Create a tm struct to hold the parsed date.
-//             istringstream dateStream(currentDateStr); // Create a string stream for parsing.
-//             dateStream >> get_time(&currentDate, "%Y-%m-%d"); // Parse the date string.
-
-//             if (!dateStream.fail()) // Check if the date parsing was successful.
-//             {
-//                 // Compare the current date with the latest date
-//                 tm latestDate = {}; // Create a tm struct to hold the latest date.
-
-//                 // Parse the date string from the latestCase 
-//                 if (found) {
-//                     istringstream latestDateStream(latestCase.getDateReported());
-//                     latestDateStream >> get_time(&latestDate, "%Y-%m-%d");
-//                 }
-
-//                 // Compare the current date with the latest date using mktime
-//                 if (!found || mktime(&currentDate) > mktime(&latestDate))
-//                 {
-//                     latestCase = record; // Update the latestCase variable with the current record.
-//                     found = true; // Set the flag to indicate that a case was found.
-//                 }
-//             }
-//         }
-
-//         current = current->next; // Move to the next node in the linked list.
-//     }
-
-//     // Check if a latest case was found
-//     // Check if at least one case was found
-//     if (found)
-//     {
-//         cout << ">>>>>> Latest Cases Found: >>>>>>\n" << endl;
-//         current = head; // Reset the pointer to traverse the list again.
-
-//         while (current != nullptr)
-//         {
-//             const Patient &record = current->data;
-
-//             if (record.getDoctorReported() == doctorUsername)
-//             {
-//                 cout << "Patient Id: " << record.getPatientId() << endl;
-//                 cout << "Patient Name: " << record.getPatientName() << endl;
-//                 cout << "Patient Age: " << record.getPatientAge() << endl;
-//                 cout << "Patient Residence: " << record.getPatientResidence() << endl;
-//                 cout << "Patient Phone No: " << record.getPatientPhoneNo() << endl;
-//                 cout << "Patient Emergency Contact: " << record.getPatientEmergencyContactNo() << endl;
-//                 cout << "Date Reported: " << record.getDateReported() << endl;
-//                 cout << "Doctor Reported: " << record.getDoctorReported() << endl;
-//                 cout << "-------------------" << endl;
-//             }
-
-//             current = current->next;
-//         }
-//     }
-//     else
-//     {
-//         cout << "\nNo cases found for doctor: " << doctorUsername << endl;
-//     }
-// }
+        return caseCount;
+}
 
 void DengueCasesLinkedList::findLatestCaseByDoctor(const string &doctorUsername)
 {
-    Patient latestCase; // Initialize a variable to store the latest patient case.
+    Patient latestCase;   // Initialize a variable to store the latest patient case.
     Node *current = head; // Initialize a pointer to traverse the linked list.
-    bool found = false; // Initialize a boolean flag to track if a case is found.
+    bool found = false;   // Initialize a boolean flag to track if a case is found.
 
     while (current != nullptr)
     {
@@ -279,8 +153,8 @@ void DengueCasesLinkedList::findLatestCaseByDoctor(const string &doctorUsername)
             string currentDateStr = record.getDateReported(); // Get the date string from the patient record.
 
             // Parse the date string into a tm struct
-            tm currentDate = {}; // Create a tm struct to hold the parsed date.
-            istringstream dateStream(currentDateStr); // Create a string stream for parsing.
+            tm currentDate = {};                              // Create a tm struct to hold the parsed date.
+            istringstream dateStream(currentDateStr);         // Create a string stream for parsing.
             dateStream >> get_time(&currentDate, "%Y-%m-%d"); // Parse the date string.
 
             if (!dateStream.fail()) // Check if the date parsing was successful.
@@ -288,7 +162,7 @@ void DengueCasesLinkedList::findLatestCaseByDoctor(const string &doctorUsername)
                 // Compare the current date with the latest date
                 tm latestDate = {}; // Create a tm struct to hold the latest date.
 
-                // Parse the date string from the latestCase 
+                // Parse the date string from the latestCase
                 if (found)
                 {
                     istringstream latestDateStream(latestCase.getDateReported());
@@ -299,12 +173,13 @@ void DengueCasesLinkedList::findLatestCaseByDoctor(const string &doctorUsername)
                 if (!found || mktime(&currentDate) > mktime(&latestDate))
                 {
                     latestCase = record; // Update the latestCase variable with the current record.
-                    found = true; // Set the flag to indicate that a case was found.
+                    found = true;        // Set the flag to indicate that a case was found.
                 }
                 else if (mktime(&currentDate) == mktime(&latestDate))
                 {
                     // If the current case has the same latest date, print it
-                    cout << ">>>>>> Latest Case Found: >>>>>>\n" << endl;
+                    cout << ">>>>>> Latest Case Found: >>>>>>\n"
+                         << endl;
                     cout << "Patient Id: " << record.getPatientId() << endl;
                     cout << "Patient Name: " << record.getPatientName() << endl;
                     cout << "Patient Age: " << record.getPatientAge() << endl;
@@ -327,30 +202,30 @@ void DengueCasesLinkedList::findLatestCaseByDoctor(const string &doctorUsername)
     }
 }
 
-
-
-
-
-void DengueCasesLinkedList::findDengueCasesByPatientIdAndName(const string &patientID, const string &patientName){
+void DengueCasesLinkedList::findDengueCasesByPatientIdAndName(const string &patientID, const string &patientName)
+{
     bool found = false;
     Node *current = head;
     Patient matchedPatient; // Variable to store the matched patient's data
 
-    while(current != nullptr){
+    while (current != nullptr)
+    {
         const Patient &record = current->data;
 
-        if(record.getPatientId() == patientID && record.getPatientName() == patientName){
+        if (record.getPatientId() == patientID && record.getPatientName() == patientName)
+        {
             found = true;
             matchedPatient = record; // Store the matched patient's data
-            break; // Exit the loop as you've found a match
+            break;                   // Exit the loop as you've found a match
         }
-       
+
         current = current->next;
     }
 
     if (found)
     {
-        cout << ">>>>>> Dengue Case Found: >>>>>>\n" << endl;
+        cout << ">>>>>> Dengue Case Found: >>>>>>\n"
+             << endl;
         cout << "Patient Id: " << matchedPatient.getPatientId() << endl;
         cout << "Patient Name: " << matchedPatient.getPatientName() << endl;
         cout << "Patient Age: " << matchedPatient.getPatientAge() << endl;
@@ -362,29 +237,50 @@ void DengueCasesLinkedList::findDengueCasesByPatientIdAndName(const string &pati
     }
     else
     {
-        cout << "\nDengue Cases not found!: "  << endl;
+        cout << "\nDengue Cases not found!: " << endl;
     }
 }
 
-
-int DengueCasesLinkedList::countCasesByAgeAndState(int minAge, int maxAge, const string &minState, const string &maxState) {
-        int caseCount = 0;
-        Node *current = head;
-
-        while (current!= nullptr) {
-            const Patient &record = current->data;
-            int age = record.getPatientAge();
-            string state = record.getPatientResidence();
-
-            if (age >= minAge && age <= maxAge && state >= minState && state <= maxState) {
-                caseCount++;
-            }
-
-            current = current->next;
-        }
-
-        return caseCount;
+void DengueCasesLinkedList::findPersonalDengueFeverStatusBasedOnDateRange(const string startDate, const string endDate, const string patientName)
+{
+    if (!isValidDate(startDate, "%Y-%m-%d") || !isValidDate(endDate, "%Y-%m-%d"))
+    {
+        cout << "Invalid date format. Please use YYYY-MM-DD format for dates." << endl;
+        return;
     }
 
+    if (startDate > endDate)
+    {
+        cout << "Invalid date range. Start date should be before or equal to end date." << endl;
+        return;
+    }
 
+    Node *current = this->head; // Use 'this' to access the member variable 'head'
+    bool found = false;
 
+    cout << "\nPatients within the date range " << startDate << " to " << endDate << ":\n";
+
+    while (current != nullptr)
+    {
+        const Patient &patient = current->data;
+        if (patient.getPatientName() == patientName && patient.getDateReported() >= startDate && patient.getDateReported() <= endDate)
+        {
+            cout << "\nPatient Id: " << patient.getPatientId() << endl;
+            cout << "Name: " << patient.getPatientName() << endl;
+            cout << "Age: " << patient.getPatientAge() << endl;
+            cout << "Residence: " << patient.getPatientResidence() << endl;
+            cout << "Phone Number: " << patient.getPatientPhoneNo() << endl;
+            cout << "Emergency Contact Number: " << patient.getPatientEmergencyContactNo() << endl;
+            cout << "Report Date: " << patient.getDateReported() << endl;
+            cout << "Reporting Doctor: " << patient.getDoctorReported() << endl;
+            cout << "------------------------" << endl;
+            found = true; // At least one patient found in the date range
+        }
+        current = current->next;
+    }
+
+    if (!found)
+    {
+        cout << "No patients found in the specified date range." << endl;
+    }
+}

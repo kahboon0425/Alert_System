@@ -18,11 +18,11 @@ using namespace std;
 
 // Function declarations
 void displayMainMenu();
-void loginAsUser(Admin &admin, User &user);
+void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases);
 void loginAsDoctor(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases);
 void loginAsAdmin(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases);
 
-void userMenu(Admin &admin, User &user);
+void userMenu(Admin &admin, User &user, DengueCasesLinkedList &dengueCases);
 void doctorMenu(Doctor &doctor, Admin &admin, DengueCasesLinkedList &dengueCases);
 void adminMenu(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases);
 
@@ -47,7 +47,7 @@ int main()
         case 1:
         {
             // calling the function
-            loginAsUser(admin, user);
+            loginAsUser(admin, user, dengueCases);
             break;
         }
         case 2:
@@ -79,7 +79,7 @@ void displayMainMenu()
     cout << "1. Login As User \n2. Login As Doctor \n3. Login As Admin\n\nEnter your choice: ";
 }
 
-void loginAsUser(Admin &admin, User &user)
+void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases)
 {
     string user_username;
     string user_password;
@@ -95,7 +95,7 @@ void loginAsUser(Admin &admin, User &user)
         cout << "\nLogin Successfully.\n"
              << endl;
         User userInfo = admin.getUserInfo(user_username);
-        userMenu(admin, userInfo);
+        userMenu(admin, userInfo, dengueCases);
     }
     else
     {
@@ -148,13 +148,16 @@ void loginAsAdmin(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, 
     }
 }
 
-void userMenu(Admin &admin, User &userInfo)
+void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases)
 {
     int userMenu;
     string newUsername;
     string newPassword;
     string newResidence;
     int newPhoneNo;
+
+    string startDate;
+    string endDate;
     while (true)
     {
         cout << "\n-------- User Menu --------\n"
@@ -215,8 +218,15 @@ void userMenu(Admin &admin, User &userInfo)
             // code
             break;
         case 5: // Search Status
-            // code
-            break;
+            cout << "Enter start date in YYYY-MM-DD format: ";
+            cin >> startDate;
+
+            cout << "Enter end date in YYYY-MM-DD format: ";
+            cin >> endDate;
+
+            dengueCases.findPersonalDengueFeverStatusBasedOnDateRange(startDate, endDate, userInfo.getUsername());
+            continue;
+
         case 6: // Logout
             return;
         }
@@ -576,11 +586,13 @@ void adminMenu(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, Wee
             admin.createUser("user1", "password1", "residence1", 012, fifteenDaysAgo);
             admin.createUser("user2", "password2", "residence2", 016, fifteenDaysAgo);
 
-            cout << "\nAll Registered Users:\n" << endl;
+            cout << "\nAll Registered Users:\n"
+                 << endl;
             admin.printAllUsers();
             // Call the checkInactivity function to check for inactive users
             admin.checkInactivity();
-            cout << "\nAll Registered Users after removing the inactive one:\n" << endl;
+            cout << "\nAll Registered Users after removing the inactive one:\n"
+                 << endl;
             admin.printAllUsers();
             break;
         }

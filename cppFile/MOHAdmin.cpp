@@ -247,7 +247,7 @@ void Admin::printAllUsers()
         struct tm *timeinfo = localtime(&lastLoginTime);
         char buffer[11]; // To hold the formatted date (YYYY-MM-DD)
         strftime(buffer, sizeof(buffer), "%Y-%m-%d", timeinfo);
-        cout << "Last Activity Time: " << buffer << endl;
+        cout << "Last Activity Date: " << buffer << endl;
     }
 }
 
