@@ -395,6 +395,7 @@ void adminMenu(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, Wee
     string token;
     int totalCases;
     int columnCount;
+
     while (true)
     {
         cout << "------------------ Admin Menu ------------------\n"
@@ -459,12 +460,63 @@ void adminMenu(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, Wee
             cout << "\n";
 
             continue;
-            break;
         }
         case 2:
         {
-            // Implement code to view weekly dengue cases and display relevant information.
-            break;
+
+            fileName = "csvFile/NumberOfDengueFeverCasesWeeklyByState.csv";
+
+            // Read data from the CSV file and populate the linked list
+            file.open(fileName);
+            if (file.is_open())
+            {
+
+                // Skip the header line
+                getline(file, line);
+
+                string line;
+                while (getline(file, line))
+                {
+                    istringstream ss(line);
+                    string token;
+                    int data[15];
+                    int year, week, i = 0;
+
+                    while (getline(ss, token, ','))
+                    {
+                        if (i == 0)
+                        {
+                            year = stoi(token);
+                        }
+                        else if (i == 1)
+                        {
+                            week = stoi(token);
+                        }
+                        else
+                        {
+                            data[i - 2] = stoi(token);
+                        }
+                        i++;
+                    }
+
+                    weeklyDengueCases.insert(year, week, data);
+                }
+
+                file.close();
+            }
+            else
+            {
+                cout << "Could not open the file." << endl;
+            }
+            int year, week;
+            cout << "Enter the year: ";
+            cin >> year;
+            cout << "Enter the week: ";
+            cin >> week;
+
+            weeklyDengueCases.sortCasesByState(year, week);
+
+            continue;
         }
         case 3:
         {
