@@ -107,7 +107,16 @@ void AnnualDengueCasesLinkedList::displayTotalCasesBasedOnYearAndState(const str
 
         current = current->next;
     }
-    cout << "Year: " << year << ", State: " << state << ", Total Cases: " << totalCasesForYearAndState << endl;
+    string stateNames[] = {
+        "JOHOR", "KEDAH", "KELANTAN", "MELAKA", "NEGERI SEMBILAN",
+        "PAHANG", "PERAK", "PERLIS", "PULAU PINANG", "SABAH",
+        "SARAWAK", "SELANGOR", "TERENGGANU", "WP KUALA LUMPUR", "WP LABUAN"};
+
+    if (state >= 1 && state <= 15)
+    {
+        string stateName = stateNames[state - 1];
+        cout << "\nYear: " << year << ", State: " << stateName << ", Total Cases: " << totalCasesForYearAndState << endl;
+    }
     totalCasesForYearAndState = 0;
 }
 
