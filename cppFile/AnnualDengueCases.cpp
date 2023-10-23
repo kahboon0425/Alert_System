@@ -3,12 +3,25 @@
 using namespace std;
 #include "../headerFile/AnnualDengueCases.h"
 
-AnnualDengueCases::AnnualDengueCases(const string &yearParam, int &totalCasesParam)
+// AnnualDengueCases::AnnualDengueCases(const string &yearParam, int &totalCasesParam)
+// {
+//     year = yearParam;
+//     totalCases = totalCasesParam;
+//     next = nullptr;
+// }
+AnnualDengueCases::AnnualDengueCases(const std::string &yearParam, const std::string &stateParam, int totalCasesParam)
+    : year(yearParam), state(stateParam), totalCases(totalCasesParam), next(nullptr)
 {
+}
+
+AnnualDengueCases::AnnualDengueCases(const std::string &yearParam, int totalCasesParam) {
+    // Initialize the fields of the AnnualDengueCases object here
     year = yearParam;
     totalCases = totalCasesParam;
-    next = nullptr;
+    // Any other necessary initialization
 }
+
+
 
 AnnualDengueCasesLinkedList::AnnualDengueCasesLinkedList()
 {
@@ -57,17 +70,64 @@ void AnnualDengueCasesLinkedList::readCsvFileAnnualCases(const string &year, int
     size++;
 }
 
+void AnnualDengueCasesLinkedList::readCsvFileAnnualCases(const string &year, const string &state, int totalCases)
+{
+    // Create a new node to store the data
+    // AnnualDengueCases *newNode = new AnnualDengueCases(year, state, totalCases);
+    AnnualDengueCases *newNode = new AnnualDengueCases;
+    newNode->year = year;
+    newNode->state = state;
+    newNode->totalCases = totalCases;
+    newNode->next = nullptr;
+
+    // Initialize the new node's members with the provided values
+    newNode->year = year;
+    newNode->state = state;
+    newNode->totalCases = totalCases;
+    newNode->next = nullptr;
+
+    // Add the new node to the linked list
+    if (head == nullptr)
+        head = newNode; // If the list is empty, set the head to the new node
+    else
+    {
+        AnnualDengueCases *last = head;
+        while (last->next != nullptr)
+            last = last->next;
+        last->next = newNode;
+    }
+
+    size++;
+}
+
+void AnnualDengueCasesLinkedList::displayTotalCasesBasedOnYearAndState(const string &year, const string &state)
+{
+    AnnualDengueCases *current = head;
+    int totalCasesForYearAndState = 0;
+    while (current)
+    {
+        if (current->year == year && current->state == state)
+        {
+            totalCasesForYearAndState += current->totalCases;
+        }
+        current = current->next;
+    }
+    cout << "Year: " << year << ", State: " << state << ", Total Cases: " << totalCasesForYearAndState << endl;
+}
+
 void AnnualDengueCasesLinkedList::displayTotalCases()
 {
     AnnualDengueCases *current = head;
     string currentYear = "";
     int totalCasesForYear = 0;
 
+    // while current not equal nullptr
     while (current)
     {
+        // checks if the year in the current node is different from the previously encountered year = indication it has moved to a new year's data
         if (current->year != currentYear)
         {
-            //  if encountered a new year, so display the total cases for the previous year
+            
             if (!currentYear.empty())
             {
                 cout << "Year: " << currentYear << ", Total Cases: " << totalCasesForYear << endl;
@@ -75,6 +135,7 @@ void AnnualDengueCasesLinkedList::displayTotalCases()
 
             // Reset the total cases and update the current year
             totalCasesForYear = 0;
+            // updates the currentYear to the year from the current node
             currentYear = current->year;
         }
 
@@ -201,13 +262,15 @@ AnnualDengueCases *AnnualDengueCasesLinkedList::findNodeByYear(const string &yea
     return nullptr; // Year not found
 }
 
-void AnnualDengueCasesLinkedList::clear() {
-    AnnualDengueCases* current = head;
-    while (current != nullptr) {
-        AnnualDengueCases* next = current->next;
+void AnnualDengueCasesLinkedList::clear()
+{
+    AnnualDengueCases *current = head;
+    while (current != nullptr)
+    {
+        AnnualDengueCases *next = current->next;
         delete current; // Delete the current node
         current = next;
     }
     head = nullptr; // Set head to nullptr to indicate an empty list
-    size = 0; // Reset the size to 0
+    size = 0;       // Reset the size to 0
 }

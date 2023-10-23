@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <map> 
 #include "headerFile/MOHAdmin.h"
 #include "headerFile/User.h"
 #include "headerFile/Doctor.h"
@@ -18,11 +19,11 @@ using namespace std;
 
 // Function declarations
 void displayMainMenu();
-void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases);
+void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases);
 void loginAsDoctor(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases);
 void loginAsAdmin(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases);
 
-void userMenu(Admin &admin, User &user, DengueCasesLinkedList &dengueCases);
+void userMenu(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases);
 void doctorMenu(Doctor &doctor, Admin &admin, DengueCasesLinkedList &dengueCases);
 void adminMenu(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases);
 
@@ -47,7 +48,7 @@ int main()
         case 1:
         {
             // calling the function
-            loginAsUser(admin, user, dengueCases);
+            loginAsUser(admin, user, dengueCases, annualDengueCases);
             break;
         }
         case 2:
@@ -79,7 +80,7 @@ void displayMainMenu()
     cout << "1. Login As User \n2. Login As Doctor \n3. Login As Admin\n\nEnter your choice: ";
 }
 
-void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases)
+void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases)
 {
     string user_username;
     string user_password;
@@ -95,7 +96,7 @@ void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases)
         cout << "\nLogin Successfully.\n"
              << endl;
         User userInfo = admin.getUserInfo(user_username);
-        userMenu(admin, userInfo, dengueCases);
+        userMenu(admin, userInfo, dengueCases, annualDengueCases);
     }
     else
     {
@@ -148,7 +149,7 @@ void loginAsAdmin(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, 
     }
 }
 
-void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases)
+void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases)
 {
     int userMenu;
     string newUsername;
@@ -158,6 +159,23 @@ void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases)
 
     string startDate;
     string endDate;
+
+    string year;
+    int totalCases;
+
+    ifstream file;
+    string fileName;
+    string line;
+    string word;
+    string rowData;
+
+    string token;
+    int columnCount;
+    string selectedYear;
+    string selectedState;
+    map<int, string> stateColumns; // Declare the map here
+    string column;
+
     while (true)
     {
         cout << "\n-------- User Menu --------\n"
@@ -209,8 +227,90 @@ void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases)
             continue;
 
         case 2: // View Total Dengue Cases
-            // code
-            break;
+            annualDengueCases.clear();
+            annualDengueCases.addNewDengueCases(dengueCases);
+            fileName = "csvFile/AnnualDengueCasesByState.csv";
+
+            // Read data from the CSV file and populate the linked list
+            file.open(fileName);
+            if (file.is_open())
+            {
+                // map<int, string> stateColumns; // Declare the map here
+
+                getline(file, line); // Skip the header line
+
+                // Parse the header to get the state names
+                stringstream headerStream(line);
+                // Map column index to state name
+                int columnIndex = 0;
+
+                while (getline(headerStream, column, ','))
+                {
+                    if (columnIndex >= 2)
+                    {
+                        stateColumns[columnIndex] = column;
+                    }
+                    columnIndex++;
+                }
+
+                // Get user input for the year and state
+                string selectedYear;
+                string selectedState;
+
+                cout << "Enter Year: ";
+                cin >> selectedYear;
+
+                cout << "Enter State: ";
+                cin >> selectedState;
+
+                bool yearFound = false;
+
+                // Process data rows
+                while (getline(file, line))
+                {
+                    stringstream ss(line);
+                    int columnCount = 0;
+                    string token;
+                    string year;
+                    int totalCases = 0;
+
+                    while (getline(ss, token, ','))
+                    {
+                        if (columnCount == 0)
+                        {
+                            year = token;
+                        }
+                        else if (columnCount >= 2)
+                        {
+                            totalCases += stoi(token);
+                        }
+                        columnCount++;
+                    }
+
+                    // Check if the year matches the selected year
+                    if (year == selectedYear)
+                    {
+                        yearFound = true;
+                        string state = stateColumns[columnCount - 1]; // Get the state name from the map
+                        if (state == selectedState)
+                        {
+                            annualDengueCases.readCsvFileAnnualCases(year, state, totalCases);
+                        }
+                    }
+                }
+
+                if (!yearFound)
+                {
+                    cout << "Selected year not found in the data" << endl;
+                }
+                else
+                {
+                    annualDengueCases.displayTotalCasesBasedOnYearAndState(selectedYear, selectedState);
+                }
+            }
+            file.close();
+            continue;
+
         case 3: // View Daily Dengue Cases
             // code
             break;
@@ -351,6 +451,7 @@ void doctorMenu(Doctor &doctorInfo, Admin &admin, DengueCasesLinkedList &dengueC
             continue;
 
         case 3: // View Reported Cases
+            dengueCases.print();
             dengueCases.findLatestCaseByDoctor(doctorInfo.getUsername());
             continue;
 
@@ -455,7 +556,7 @@ void adminMenu(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, Wee
 
                 file.close();
                 cout << "\n";
-                cout << ">>>>>>>> Total Dengue Cses by Year >>>>>>>>>>>>\n"
+                cout << ">>>>>>>> Total Dengue Cases by Year >>>>>>>>>>>>\n"
                      << endl;
                 annualDengueCases.displayTotalCases();
                 cout << "\n";

@@ -7,50 +7,26 @@ using namespace std;
 // define node
 struct AnnualDengueCases
 {
-    // int year;
-    // string ageGroup;
-    // string Johorstate;
-    // string KedahState;
-    // string KelantanState;
-    // string MelakaState;
-    // string NegeriSembilanState;
-    // string PahangState;
-    // string PerakState;
-    // string PerlisState;
-    // string PulauPinangState;
-    // string SabahState;
-    // string SarawakState;
-    // string SelangorState;
-    // string TerengganuState;
-    // string KLState;
-    // string LabuanState;
-    
-    // string data;
-    string year;
+    std::string year;
+    std::string state;
     int totalCases;
     AnnualDengueCases *next;
     AnnualDengueCases(){};
-    // AnnualDengueCases(const string& rowData);
-    AnnualDengueCases(const string &yearParam, int &totalCasesParam);
-
-    // AnnualDengueCases(int &year, string &ageGroup,
-    //                   string &Johorstate,
-    //                   string &KedahState,
-    //                   string &KelantanState,
-    //                   string &MelakaState,
-    //                   string &NegeriSembilanState,
-    //                   string &PahangState,
-    //                   string &PerakState,
-    //                   string &PerlisState,
-    //                   string &PulauPinangState,
-    //                   string &SabahState,
-    //                   string &SarawakState,
-    //                   string &SelangorState,
-    //                   string &TerengganuState,
-    //                   string &KLState,
-    //                   string &LabuanState);
-
+    AnnualDengueCases(const std::string &yearParam, const std::string &stateParam, int totalCasesParam);
+    AnnualDengueCases(const std::string &yearParam, int totalCasesParam);
 };
+
+// define node
+// struct AnnualDengueCases
+// {
+
+//     string year;
+//     int totalCases;
+//     AnnualDengueCases *next;
+//     AnnualDengueCases(){};
+//     AnnualDengueCases(const string &yearParam, int &totalCasesParam);
+
+// };
 
 // define linked list
 class AnnualDengueCasesLinkedList
@@ -61,18 +37,18 @@ public:
 
     // void readCsvFile(const string& rowData);
     void readCsvFileAnnualCases(const string &year, int &totalCases);
-    void addNewDengueCases(const DengueCasesLinkedList& dengueCasesList);
+    void readCsvFileAnnualCases(const string &year, const string &state, int totalCases);
+    void addNewDengueCases(const DengueCasesLinkedList &dengueCasesList);
+    void displayTotalCasesBasedOnYearAndState(const string &year, const string &state);
+
     void displayTotalCases();
     void displayScaledBarChart(int scaleFactor);
     void clear();
-    
 
 public:
     AnnualDengueCases *head;
     int size;
-    AnnualDengueCases* findNodeByYear(const string& year);
+    AnnualDengueCases *findNodeByYear(const string &year);
 };
-
-
 
 #endif
