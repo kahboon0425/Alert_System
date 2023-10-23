@@ -9,6 +9,10 @@ WeeklyDengueCases::WeeklyDengueCases(int year, int week)
     this->year = year;
     this->week = week;
     next = nullptr;
+    for (int i = 0; i < 15; i++) {
+        cases[i] = 0;
+        consecutiveWeeks[i] = 0;
+    }
 }
 
 // Constructor for WeeklyDengueCasesLinkedList class
@@ -126,7 +130,7 @@ void WeeklyDengueCasesLinkedList::sortCasesByState(int year, int week)
 string WeeklyDengueCasesLinkedList::getStateName(int index)
 {
     const string stateNames[] = {
-        "\nJOHOR", "KEDAH", "KELANTAN", "MELAKA", "NEGERI SEMBILAN", "PAHANG", "PERAK", "PERLIS",
+        "JOHOR", "KEDAH", "KELANTAN", "MELAKA", "NEGERI SEMBILAN", "PAHANG", "PERAK", "PERLIS",
         "PULAU PINANG", "SABAH", "SARAWAK", "SELANGOR", "TERENGGANU", "WP KUALA LUMPUR", "WP LABUAN"
     };
 
@@ -137,7 +141,91 @@ string WeeklyDengueCasesLinkedList::getStateName(int index)
     }
 }
 
+void WeeklyDengueCasesLinkedList::insertNewCases(int year, int week, int *caseData) {
+   WeeklyDengueCases* newNode = new WeeklyDengueCases{year, week};
+        for (int i = 0; i < 15; i++) {
+            newNode->cases[i] = caseData[i];
+        }
 
+        newNode->next = head;
+        head = newNode;
+    }
+
+
+
+void WeeklyDengueCasesLinkedList::checkAlerts(int stateIndex) {
+    WeeklyDengueCases* current = head;
+        int latestYear = 0;
+        int latestWeeks[3] = {0};
+
+        while (current) {
+            std::cout << "State: " << getStateName(stateIndex) << " Week: " << current->week << " Cases: " << current->cases[stateIndex] << std::endl;
+            if (current->cases[stateIndex] >= 20) {
+                latestYear = current->year;
+                latestWeeks[2] = latestWeeks[1];
+                latestWeeks[1] = latestWeeks[0];
+                latestWeeks[0] = current->week;
+            }
+            current = current->next;
+        }
+
+        if (latestYear == 0) {
+            std::cout << "No alerts for state " << getStateName(stateIndex) << " at this time." << std::endl;
+            return;
+        }
+
+        std::string alertMessage = "ALERT: Dengue cases in " + getStateName(stateIndex) + " have reached 20 or more in the last 3 weeks.";
+        std::cout << alertMessage << std::endl;
+        // sendAlertToUsers(alertMessage);
+    }
+
+
+
+void WeeklyDengueCasesLinkedList::clear() {
+    // Remove all nodes from the list and reset the head to nullptr
+    while (head) {
+        WeeklyDengueCases* current = head;
+        head = head->next;
+        delete current;
+    }
+}
+
+
+
+// void WeeklyDengueCasesLinkedList::initializeCasesFor2023() {
+//         // Find the nodes for the specified year (2023) and week (1)
+//         int year = 2023;
+//         int week = 1;
+//         WeeklyDengueCases* current = head;
+
+//         while (current && (current->year != year || current->week != week)) {
+//             current = current->next;
+//         }
+
+//         if (!current) {
+//             cout << "Data not found for the specified year and week." << endl;
+//             return;
+//         }
+
+//         // Set the cases for Johor (index 0) and Kuala Lumpur (index 13) to 20 for the consecutive weeks (1, 2, and 3)
+//         int johorIndex = 0;
+//         int klIndex = 13;
+//         for (int i = 0; i < 3; i++) {
+//             current->cases[johorIndex] = 20;
+//             current->cases[klIndex] = 20;
+
+//             // If you want to set the cases for the next consecutive week, create a new node
+//             week++;
+//             WeeklyDengueCases* newNode = new WeeklyDengueCases(year, week);
+//             newNode->cases[johorIndex] = 20;
+//             newNode->cases[klIndex] = 20;
+//             newNode->next = current->next;
+//             current->next = newNode;
+
+//             current = newNode; // Move to the next node for the next week
+//         }
+//     }
+// };
 
 
 

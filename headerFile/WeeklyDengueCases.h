@@ -14,12 +14,13 @@ using namespace std;
 //     // WeeklyDengueCases(const string& rowData);
 // };
 
-
-struct WeeklyDengueCases {
-    int year;         
-    int week;         
+struct WeeklyDengueCases
+{
+    int year;
+    int week;
     int cases[15];
-    WeeklyDengueCases* next;   
+    int consecutiveWeeks[15];
+    WeeklyDengueCases *next;
     WeeklyDengueCases(int year, int week);
 };
 
@@ -31,17 +32,19 @@ public:
 
     void merge(pair<string, int> stateCases[], int left, int middle, int right);
     void mergeSort(pair<string, int> stateCases[], int left, int right);
-    void insert(int year, int week, int* caseData);
+    void insert(int year, int week, int *caseData);
     void sortCasesByState(int year, int week);
     string getStateName(int index);
-    
-
+    // void initializeCasesFor2023()
+    void insertNewCases(int year, int week, int *caseData);
+    // void checkAlerts(int year, int week);
+    void checkAlerts(int stateIndex);
+    void clear();
 
     // void readCsvFile(const string& rowData);
     // void viewWeeklyCasesSortByCaseNumber(const string& year, const int &week);
     // void addWeeklyCases();
     // void sendAlert();
-
 
 private:
     WeeklyDengueCases *head;
