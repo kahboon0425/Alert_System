@@ -8,22 +8,24 @@
 #include "headerFile/DengueCases.h"
 #include "headerFile/AnnualDengueCases.h"
 #include "headerFile/WeeklyDengueCases.h"
+#include "headerFile/DailyCases.h"
 #include "cppFile/MOHAdmin.cpp"
 #include "cppFile/User.cpp"
 #include "cppFile/Doctor.cpp"
 #include "cppFile/DengueCases.cpp"
 #include "cppFile/AnnualDengueCases.cpp"
 #include "cppFile/WeeklyDengueCases.cpp"
+#include "cppFile/DailyCases.cpp"
 
 using namespace std;
 
 // Function declarations
 void displayMainMenu();
-void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases);
+void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList);
 void loginAsDoctor(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases);
 void loginAsAdmin(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases);
 
-void userMenu(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases);
+void userMenu(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList);
 void doctorMenu(Doctor &doctor, Admin &admin, DengueCasesLinkedList &dengueCases);
 void adminMenu(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases);
 
@@ -35,6 +37,7 @@ int main()
     User user;
     AnnualDengueCasesLinkedList annualDengueCases;
     WeeklyDengueCasesLinkedList weeklyDengueCases;
+    DailyCasesList dailyCasesList;
 
     while (true)
     {
@@ -48,7 +51,7 @@ int main()
         case 1:
         {
             // calling the function
-            loginAsUser(admin, user, dengueCases, annualDengueCases);
+            loginAsUser(admin, user, dengueCases, annualDengueCases, dailyCasesList);
             break;
         }
         case 2:
@@ -80,7 +83,7 @@ void displayMainMenu()
     cout << "1. Login As User \n2. Login As Doctor \n3. Login As Admin\n\nEnter your choice: ";
 }
 
-void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases)
+void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList)
 {
     string user_username;
     string user_password;
@@ -96,7 +99,7 @@ void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, A
         cout << "\nLogin Successfully.\n"
              << endl;
         User userInfo = admin.getUserInfo(user_username);
-        userMenu(admin, userInfo, dengueCases, annualDengueCases);
+        userMenu(admin, userInfo, dengueCases, annualDengueCases, dailyCasesList);
     }
     else
     {
@@ -149,7 +152,7 @@ void loginAsAdmin(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, 
     }
 }
 
-void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases)
+void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList)
 {
     int userMenu;
     string newUsername;
@@ -175,6 +178,13 @@ void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases, 
     int selectedState;
     string column;
     int state;
+
+    string stateNames[] = {
+        "JOHOR", "KEDAH", "KELANTAN", "MELAKA", "NEGERI SEMBILAN",
+        "PAHANG", "PERAK", "PERLIS", "PULAU PINANG", "SABAH",
+        "SARAWAK", "SELANGOR", "TERENGGANU", "WP KUALA LUMPUR", "WP LABUAN"};
+
+    int dailyCases[] = {50, 30, 40, 20, 25, 35, 60, 10, 45, 55, 70, 65, 35, 30, 15};
 
     while (true)
     {
@@ -256,7 +266,6 @@ void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases, 
                             annualDengueCases.readCsvFileAnnualCases(year, state, totalCases);
                         }
                         totalCases = 0;
-                        
 
                         columnCount++;
                     }
@@ -280,11 +289,35 @@ void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases, 
             continue;
 
         case 3: // View Daily Dengue Cases
-            // code
-            break;
+
+            // Populate the linked list with state data
+
+            dailyCasesList.append("JOHOR", 50);
+            dailyCasesList.append("KEDAH", 30);
+            dailyCasesList.append("KELANTAN", 40);
+            dailyCasesList.append("MELAKA", 20);
+            dailyCasesList.append("NEGERI SEMBILAN", 25);
+            dailyCasesList.append("PAHANG", 35);
+            dailyCasesList.append("PERAK", 60);
+            dailyCasesList.append("PERLIS", 10);
+            dailyCasesList.append("PULAU PINANG", 45);
+            dailyCasesList.append("SABAH", 55);
+            dailyCasesList.append("SARAWAK", 70);
+            dailyCasesList.append("SELANGOR", 65);
+            dailyCasesList.append("TERENGGANU", 35);
+            dailyCasesList.append("WP KUALA LUMPUR", 30);
+            dailyCasesList.append("WP LABUAN", 15);
+
+            // Sort the state data
+            dailyCasesList.sort();
+
+            // Display sorted state data
+            dailyCasesList.displayDailyCases();
+
+            continue;
         case 4: // View Dengue Alert Messages
-            // code
-            break;
+
+            continue;
         case 5: // Search Status
             cout << "Enter start date in YYYY-MM-DD format: ";
             cin >> startDate;
