@@ -372,7 +372,7 @@ void doctorMenu(Doctor &doctorInfo, Admin &admin, DengueCasesLinkedList &dengueC
     {
         cout << "-------- Doctor Menu --------\n"
              << endl;
-        cout << "1. Manage Personal Information\n2. Report Cases\n3. View Reported Cases\n4. Find Name and ID\n5. Find Age and State\n6. Logout\n\nEnter your choice: ";
+        cout << "1. Manage Personal Information\n2. Report Cases\n3. View Reported Cases\n4. Find cases based on Name and ID\n5. Find Number of Cases based on Age and State\n6. Logout\n\nEnter your choice: ";
 
         int doctorChoice;
         cin >> doctorChoice;

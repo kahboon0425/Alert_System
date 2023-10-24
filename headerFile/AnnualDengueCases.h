@@ -16,17 +16,6 @@ struct AnnualDengueCases
     AnnualDengueCases(const string &yearParam, int totalCasesParam);
 };
 
-// define node
-// struct AnnualDengueCases
-// {
-
-//     string year;
-//     int totalCases;
-//     AnnualDengueCases *next;
-//     AnnualDengueCases(){};
-//     AnnualDengueCases(const string &yearParam, int &totalCasesParam);
-
-// };
 
 // define linked list
 class AnnualDengueCasesLinkedList
