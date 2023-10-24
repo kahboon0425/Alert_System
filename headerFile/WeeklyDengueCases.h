@@ -39,6 +39,10 @@ public:
     void insertNewCases(int year, int week, int *caseData);
     // void checkAlerts(int year, int week);
     void checkAlerts(int stateIndex);
+    // void sendAlertToUsers(string stateFound);
+    // void sendAlertToUsers(string alertedStates[], int alertedCount, string userState);
+    void sendAlertToUsers(string userState);
+
     void clear();
 
     // void readCsvFile(const string& rowData);
@@ -46,9 +50,11 @@ public:
     // void addWeeklyCases();
     // void sendAlert();
 
-private:
+public:
     WeeklyDengueCases *head;
     int size;
+    // string alertedStates[50]; // Adjust the size as needed
+    // int alertedCount;
 };
 
 #endif

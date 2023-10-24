@@ -21,11 +21,11 @@ using namespace std;
 
 // Function declarations
 void displayMainMenu();
-void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList);
+void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList, WeeklyDengueCasesLinkedList &weeklyDengueCases);
 void loginAsDoctor(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases);
 void loginAsAdmin(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases);
 
-void userMenu(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList);
+void userMenu(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList, WeeklyDengueCasesLinkedList &weeklyDengueCases);
 void doctorMenu(Doctor &doctor, Admin &admin, DengueCasesLinkedList &dengueCases);
 void adminMenu(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases);
 
@@ -51,7 +51,7 @@ int main()
         case 1:
         {
             // calling the function
-            loginAsUser(admin, user, dengueCases, annualDengueCases, dailyCasesList);
+            loginAsUser(admin, user, dengueCases, annualDengueCases, dailyCasesList, weeklyDengueCases);
             break;
         }
         case 2:
@@ -83,7 +83,7 @@ void displayMainMenu()
     cout << "1. Login As User \n2. Login As Doctor \n3. Login As Admin\n\nEnter your choice: ";
 }
 
-void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList)
+void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList, WeeklyDengueCasesLinkedList &weeklyDengueCases)
 {
     string user_username;
     string user_password;
@@ -99,7 +99,7 @@ void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, A
         cout << "\nLogin Successfully.\n"
              << endl;
         User userInfo = admin.getUserInfo(user_username);
-        userMenu(admin, userInfo, dengueCases, annualDengueCases, dailyCasesList);
+        userMenu(admin, userInfo, dengueCases, annualDengueCases, dailyCasesList, weeklyDengueCases);
     }
     else
     {
@@ -152,7 +152,7 @@ void loginAsAdmin(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, 
     }
 }
 
-void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList)
+void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList, WeeklyDengueCasesLinkedList &weeklyDengueCases)
 {
     int userMenu;
     string newUsername;
@@ -178,6 +178,7 @@ void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases, 
     int selectedState;
     string column;
     int state;
+    string userState;
 
     string stateNames[] = {
         "JOHOR", "KEDAH", "KELANTAN", "MELAKA", "NEGERI SEMBILAN",
@@ -316,6 +317,14 @@ void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases, 
 
             continue;
         case 4: // View Dengue Alert Messages
+
+            userState = userInfo.getResidence();
+            for (char &c : userState)
+            {
+                c = std::toupper(c);
+            }
+
+            weeklyDengueCases.sendAlertToUsers(userState);
 
             continue;
         case 5: // Search Status
