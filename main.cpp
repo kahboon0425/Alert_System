@@ -1,46 +1,355 @@
 #include <iostream>
+#include <string>
+#include <ctime>
+#include <map>
 #include "headerFile/MOHAdmin.h"
 #include "headerFile/User.h"
 #include "headerFile/Doctor.h"
 #include "headerFile/DengueCases.h"
 #include "headerFile/AnnualDengueCases.h"
 #include "headerFile/WeeklyDengueCases.h"
+#include "headerFile/DailyCases.h"
 #include "cppFile/MOHAdmin.cpp"
 #include "cppFile/User.cpp"
 #include "cppFile/Doctor.cpp"
 #include "cppFile/DengueCases.cpp"
 #include "cppFile/AnnualDengueCases.cpp"
 #include "cppFile/WeeklyDengueCases.cpp"
+#include "cppFile/DailyCases.cpp"
 
-#include <string> // Add this line to include the <string> header
-#include <fstream>
-#include <sstream>
 using namespace std;
-#include <map>
 
-void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, Patient &patient, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases)
+// Function declarations
+void displayMainMenu();
+void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList, WeeklyDengueCasesLinkedList &weeklyDengueCases);
+void loginAsDoctor(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases);
+void loginAsAdmin(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases);
+
+void userMenu(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList, WeeklyDengueCasesLinkedList &weeklyDengueCases);
+void doctorMenu(Doctor &doctor, Admin &admin, DengueCasesLinkedList &dengueCases);
+void adminMenu(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases);
+
+int main()
 {
+    Admin admin("admin", "admin123");
+    Doctor doctor;
+    DengueCasesLinkedList dengueCases;
+    User user;
+    AnnualDengueCasesLinkedList annualDengueCases;
+    WeeklyDengueCasesLinkedList weeklyDengueCases;
+    DailyCasesList dailyCasesList;
 
+    while (true)
+    {
+        displayMainMenu();
+
+        int mainMenuChoice;
+        cin >> mainMenuChoice;
+
+        switch (mainMenuChoice)
+        {
+        case 1:
+        {
+            // calling the function
+            loginAsUser(admin, user, dengueCases, annualDengueCases, dailyCasesList, weeklyDengueCases);
+            break;
+        }
+        case 2:
+        {
+            loginAsDoctor(admin, doctor, dengueCases);
+
+            break;
+        }
+        case 3:
+        {
+            loginAsAdmin(admin, annualDengueCases, weeklyDengueCases, dengueCases);
+
+            break;
+        }
+        default:
+        {
+            cout << "Invalid choice. Please try again." << endl;
+        }
+        }
+    }
+
+    return 0;
+}
+
+void displayMainMenu()
+{
+    cout << "\n----------- DENGUE FEVER SURVEILLANCE AND ALERT SYSTEM -----------\n"
+         << endl;
+    cout << "1. Login As User \n2. Login As Doctor \n3. Login As Admin\n\nEnter your choice: ";
+}
+
+void loginAsUser(Admin &admin, User &user, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList, WeeklyDengueCasesLinkedList &weeklyDengueCases)
+{
+    string user_username;
+    string user_password;
+
+    cout << "\n-------- Login As User --------\n";
+    cout << "\nEnter user username: ";
+    cin >> user_username;
+    cout << "Enter user password: ";
+    cin >> user_password;
+
+    if (admin.userLogin(user_username, user_password))
+    {
+        cout << "\nLogin Successfully.\n"
+             << endl;
+        User userInfo = admin.getUserInfo(user_username);
+        userMenu(admin, userInfo, dengueCases, annualDengueCases, dailyCasesList, weeklyDengueCases);
+    }
+    else
+    {
+        cout << "User login failed. Try again." << endl;
+    }
+}
+
+void loginAsDoctor(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases)
+{
+    string doctor_username;
+    string doctor_password;
+
+    cout << "\n-------- Login As Doctor --------\n";
+    cout << "\nEnter doctor username: ";
+    cin >> doctor_username;
+    cout << "Enter doctor password: ";
+    cin >> doctor_password;
+
+    if (admin.doctorLogin(doctor_username, doctor_password))
+    {
+        cout << "\nLogin Successfully.\n"
+             << endl;
+        Doctor doctorInfo = admin.getDoctorInfo(doctor_username);
+        doctorMenu(doctorInfo, admin, dengueCases);
+    }
+    else
+    {
+        cout << "Doctor login failed. Try again." << endl;
+    }
+}
+
+void loginAsAdmin(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases)
+{
     string admin_username;
     string admin_password;
 
-    int choice;
-    int mainMenuChoice;
+    cout << "\nEnter admin username: ";
+    cin >> admin_username;
+    cout << "Enter admin password: ";
+    cin >> admin_password;
+
+    if (admin.login(admin_username, admin_password))
+    {
+        cout << "Login Successfully." << endl;
+        adminMenu(admin, annualDengueCases, weeklyDengueCases, dengueCases);
+    }
+    else
+    {
+        cout << "Wrong admin username or password. Try again." << endl;
+    }
+}
+
+void userMenu(Admin &admin, User &userInfo, DengueCasesLinkedList &dengueCases, AnnualDengueCasesLinkedList &annualDengueCases, DailyCasesList &dailyCasesList, WeeklyDengueCasesLinkedList &weeklyDengueCases)
+{
     int userMenu;
-
-    // Register
-    string user_username;
-    string user_password;
-    string user_residence;
-    int user_phoneNo;
-
-    // Modify Account
     string newUsername;
     string newPassword;
     string newResidence;
     int newPhoneNo;
 
-    // Dengue Cases
+    string startDate;
+    string endDate;
+
+    string year;
+    int totalCases;
+
+    ifstream file;
+    string fileName;
+    string line;
+    string word;
+    string rowData;
+
+    string token;
+    int columnCount;
+    string selectedYear;
+    int selectedState;
+    string column;
+    int state;
+    string userState;
+
+    string stateNames[] = {
+        "JOHOR", "KEDAH", "KELANTAN", "MELAKA", "NEGERI SEMBILAN",
+        "PAHANG", "PERAK", "PERLIS", "PULAU PINANG", "SABAH",
+        "SARAWAK", "SELANGOR", "TERENGGANU", "WP KUALA LUMPUR", "WP LABUAN"};
+
+    int dailyCases[] = {50, 30, 40, 20, 25, 35, 60, 10, 45, 55, 70, 65, 35, 30, 15};
+
+    while (true)
+    {
+        cout << "\n-------- User Menu --------\n"
+             << endl;
+        cout << "1. Manage Personal Information \n2. View Total Dengue Cases \n3. View Daily Dengue Cases \n4. View Dengue Alert Messages \n5. Search Status \n6. Logout \n\nEnter your choice: ";
+        cin >> userMenu;
+
+        switch (userMenu)
+        {
+        case 1: // Manage Personal Information
+            cout << "\n<<<<< Welcome to your profile <<<<<" << endl;
+            cout << ">>>>> User Profile >>>>>>\n";
+            cout << "Username: " << userInfo.getUsername() << endl;
+            cout << "Password: " << userInfo.getPassword() << endl;
+            cout << "Residence: " << userInfo.getResidence() << endl;
+            cout << "Phone Number: " << userInfo.getPhoneNo() << endl;
+
+            cout << "\n >>>> Options >>>>\n";
+            cout << "\n1. Modify Username \n2. Modify Password \n3. Modify Residence \n4. Modify Phone Number \n5. Logout\n\nEnter your choice: ";
+
+            int modifyProfileInfo;
+            cin >> modifyProfileInfo;
+
+            switch (modifyProfileInfo)
+            {
+            case 1:
+                cout << "Enter new username: ";
+                cin >> newUsername;
+                admin.updateUserInformation(userInfo.getUsername(), newUsername, userInfo.getPassword(), userInfo.getResidence(), userInfo.getPhoneNo());
+                break;
+            case 2:
+                cout << "Enter new password: ";
+                cin >> newPassword;
+                admin.updateUserInformation(userInfo.getUsername(), userInfo.getUsername(), newPassword, userInfo.getResidence(), userInfo.getPhoneNo());
+                break;
+            case 3:
+                cout << "Enter new residence: ";
+                cin >> newResidence;
+                admin.updateUserInformation(userInfo.getUsername(), userInfo.getUsername(), userInfo.getPassword(), newResidence, userInfo.getPhoneNo());
+                break;
+            case 4:
+                cout << "Enter new phone number: ";
+                cin >> newPhoneNo;
+                admin.updateUserInformation(userInfo.getUsername(), userInfo.getUsername(), userInfo.getPassword(), userInfo.getResidence(), newPhoneNo);
+                break;
+            case 5:
+                break;
+            }
+            continue;
+
+        case 2: // View Total Dengue Cases
+            annualDengueCases.clear();
+            fileName = "csvFile/AnnualDengueCasesByState.csv";
+
+            // Read data from the CSV file and populate the linked list
+            file.open(fileName);
+            if (file.is_open())
+            {
+                getline(file, line); // Skip the header line
+
+                while (getline(file, line))
+                {
+                    stringstream ss(line);
+                    totalCases = 0;
+                    columnCount = 0;
+                    state = 0;
+
+                    while (getline(ss, token, ','))
+                    {
+                        if (columnCount == 0)
+                        {
+                            year = token;
+                        }
+                        else if (columnCount >= 2)
+                        {
+                            totalCases += stoi(token); // Total cases for a specific state
+                            state = columnCount - 1;   // Calculate the state index
+                            annualDengueCases.readCsvFileAnnualCases(year, state, totalCases);
+                        }
+                        totalCases = 0;
+
+                        columnCount++;
+                    }
+                }
+
+                file.close();
+            }
+            else
+            {
+                cout << "Could not open the file\n"; // Display an error message if the file couldn't be opened
+            }
+
+            cout << "Enter Year: ";
+            cin >> selectedYear;
+
+            cout << "\n(1) Johor\n(2) Kedah\n(3) Kelantan\n(4) Melaka\n(5) Negeri Sembilan\n(6) Pahang\n(7) Perak\n(8) Perlis\n(9) Pulau Pinang\n(10) Sabah\n(11) Sarawak\n(12) Selangor\n(13) Terengganu\n(14) Kuala Lumpur\n(15) Labuan\nEnter State No: ";
+
+            cin >> selectedState;
+
+            annualDengueCases.displayTotalCasesBasedOnYearAndState(selectedYear, selectedState);
+            continue;
+
+        case 3: // View Daily Dengue Cases
+
+            // Populate the linked list with state data
+
+            dailyCasesList.append("JOHOR", 50);
+            dailyCasesList.append("KEDAH", 30);
+            dailyCasesList.append("KELANTAN", 40);
+            dailyCasesList.append("MELAKA", 20);
+            dailyCasesList.append("NEGERI SEMBILAN", 25);
+            dailyCasesList.append("PAHANG", 35);
+            dailyCasesList.append("PERAK", 60);
+            dailyCasesList.append("PERLIS", 10);
+            dailyCasesList.append("PULAU PINANG", 45);
+            dailyCasesList.append("SABAH", 55);
+            dailyCasesList.append("SARAWAK", 70);
+            dailyCasesList.append("SELANGOR", 65);
+            dailyCasesList.append("TERENGGANU", 35);
+            dailyCasesList.append("WP KUALA LUMPUR", 30);
+            dailyCasesList.append("WP LABUAN", 15);
+
+            // Sort the state data
+            dailyCasesList.sort();
+
+            // Display sorted state data
+            dailyCasesList.displayDailyCases();
+
+            continue;
+        case 4: // View Dengue Alert Messages
+
+            userState = userInfo.getResidence();
+            for (char &c : userState)
+            {
+                c = std::toupper(c);
+            }
+
+            weeklyDengueCases.sendAlertToUsers(userState);
+
+            continue;
+        case 5: // Search Status
+            cout << "Enter start date in YYYY-MM-DD format: ";
+            cin >> startDate;
+
+            cout << "Enter end date in YYYY-MM-DD format: ";
+            cin >> endDate;
+
+            dengueCases.findPersonalDengueFeverStatusBasedOnDateRange(startDate, endDate, userInfo.getUsername());
+            continue;
+
+        case 6: // Logout
+            return;
+        }
+    }
+}
+
+void doctorMenu(Doctor &doctorInfo, Admin &admin, DengueCasesLinkedList &dengueCases)
+{
+    string newUsername;
+    string newPassword;
+    string newResidence;
+    int newPhoneNo;
+
     int noOfCases;
     string patientId;
     string patientName;
@@ -59,6 +368,145 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
     string state2;
     int countCase;
 
+    while (true)
+    {
+        cout << "-------- Doctor Menu --------\n"
+             << endl;
+        cout << "1. Manage Personal Information\n2. Report Cases\n3. View Reported Cases\n4. Find Name and ID\n5. Find Age and State\n6. Logout\n\nEnter your choice: ";
+
+        int doctorChoice;
+        cin >> doctorChoice;
+
+        switch (doctorChoice)
+        {
+        case 1:
+            // Manage Personal Information
+            cout << "\n<<<<< Welcome to your profile <<<<<" << endl;
+            cout << ">>>>> Doctor Profile >>>>>>\n";
+            cout << "Username: " << doctorInfo.getUsername() << endl;
+            cout << "Password: " << doctorInfo.getPassword() << endl;
+            cout << "Residence: " << doctorInfo.getResidence() << endl;
+            cout << "Phone Number: " << doctorInfo.getPhoneNo() << endl;
+
+            cout << "\n >>>> Options >>>>\n";
+            cout << "\n1. Modify Username \n2. Modify Password \n3. Modify Residence \n4. Modify Phone Number \n5. Logout\n\nEnter your choice: ";
+
+            int modifyProfileInfo;
+            cin >> modifyProfileInfo;
+
+            switch (modifyProfileInfo)
+            {
+            case 1:
+                cout << "Enter new username: ";
+                cin >> newUsername;
+                admin.updateDoctorInformation(doctorInfo.getUsername(), newUsername, doctorInfo.getPassword(), doctorInfo.getResidence(), doctorInfo.getPhoneNo());
+                doctorInfo.setUsername(newUsername);
+                break;
+            case 2:
+                cout << "Enter new password: ";
+                cin >> newPassword;
+                admin.updateDoctorInformation(doctorInfo.getUsername(), doctorInfo.getUsername(), newPassword, doctorInfo.getResidence(), doctorInfo.getPhoneNo());
+                doctorInfo.setPassword(newPassword);
+
+                break;
+            case 3:
+                cout << "Enter new residence: ";
+                cin >> newResidence;
+                admin.updateDoctorInformation(doctorInfo.getUsername(), doctorInfo.getUsername(), doctorInfo.getPassword(), newResidence, doctorInfo.getPhoneNo());
+                doctorInfo.setResidence(newResidence);
+                break;
+            case 4:
+                cout << "Enter new phone number: ";
+                cin >> newPhoneNo;
+                admin.updateDoctorInformation(doctorInfo.getUsername(), doctorInfo.getUsername(), doctorInfo.getPassword(), doctorInfo.getResidence(), newPhoneNo);
+                doctorInfo.setPhoneNo(newPhoneNo);
+                break;
+            case 5:
+                break;
+            }
+            continue;
+
+        case 2: // Report Cases
+            cout << "How many cases you want to report?: ";
+            cin >> noOfCases;
+            for (int i = 0; i < noOfCases; i++)
+            {
+                cout << "Enter patient's Id: ";
+                cin >> patientId;
+                cout << "Enter patient's name: ";
+                cin >> patientName;
+                cout << "Enter patient's age: ";
+                cin >> patientAge;
+                cout << "Enter patient's residence: ";
+                cin >> patientResidence;
+                cout << "Enter patient's phone number: ";
+                cin >> patientPhoneNo;
+                cout << "Enter patient's emergency contact number: ";
+                cin >> patientEmergencyContactNo;
+                cout << "Enter a date in YYYY-MM-DD format: ";
+                cin >> reportDate;
+
+                if (dengueCases.isValidDate(reportDate, "%Y-%m-%d"))
+                {
+                    cout << "Valid date: " << reportDate << endl;
+                }
+                else
+                {
+                    cout << "Invalid date format. Please enter the date in YYYY-MM-DD format." << std::endl;
+                }
+
+                dengueCases.insert(Patient(patientId, patientName, patientAge, patientResidence, patientPhoneNo, patientEmergencyContactNo, reportDate, doctorInfo.getUsername()));
+            };
+
+            continue;
+
+        case 3: // View Reported Cases
+            dengueCases.print();
+            dengueCases.findLatestCaseByDoctor(doctorInfo.getUsername());
+            continue;
+
+        case 4: // Find Name And Id
+            cout << ">>>>>>>> Find dengue fever cases based on patient name or patient id >>>>>>>" << endl;
+            cout << "Enter Patient Id: ";
+            cin >> searchPatientId;
+            cout << "Enter Patient Name: ";
+            cin >> searchPatientName;
+            dengueCases.findDengueCasesByPatientIdAndName(searchPatientId, searchPatientName);
+            continue;
+
+        case 5: // Find Age And State
+            cout << "<<<<<< Find the number of cases for any given age range and any given state range <<<<<<\n"
+                 << endl;
+            cout << "Enter Age Range >>" << endl;
+            cout << "Min Age: ";
+            cin >> minAge;
+            cout << "Max Age: ";
+            cin >> maxAge;
+            cout << "\nEnter State Range >>" << endl;
+            cout << "State 1: ";
+            cin >> state1;
+            cout << "State 2: ";
+            cin >> state2;
+            countCase = dengueCases.countCasesByAgeAndState(minAge, maxAge, state1, state2);
+            cout << "\nNumber of cases within the age range " << minAge << " to " << maxAge
+                 << " and state range " << state1 << " to " << state2 << ": " << countCase << endl;
+            continue;
+
+        case 6: // Logout
+            return;
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+}
+
+void adminMenu(Admin &admin, AnnualDengueCasesLinkedList &annualDengueCases, WeeklyDengueCasesLinkedList &weeklyDengueCases, DengueCasesLinkedList &dengueCases)
+{
+    string user_username;
+    string user_password;
+    string user_residence;
+    int user_phoneNo;
+
     ifstream file;
     string fileName;
     string line;
@@ -69,428 +517,204 @@ void mainMenu(Admin &admin, Doctor &doctor, DengueCasesLinkedList &dengueCases, 
     string token;
     int totalCases;
     int columnCount;
-    map<string, int> totalCasesByYear;
-
-    string yearForWeeklyCases;
-    int week;
-
-    bool returnToAdminMenu = false;
-
-    cout << "\n----------- DENGUE FEVER SURVEILLANCE AND ALERT SYSTEM -----------\n"
-         << endl;
-    cout << "1. Login As User \n2. Login As Doctor \n3. Login As Admin\n\nEnter your choice: ";
-
-    cin >> mainMenuChoice;
-
-    switch (mainMenuChoice)
-    {
-    case 1: // Login As User
-        cout << "\n-------- Login As User --------\n";
-        cout << "\nEnter user username: ";
-        cin >> user_username;
-        cout << "Enter user password: ";
-        cin >> user_password;
-
-        if (admin.userLogin(user_username, user_password))
-        {
-            cout << "\nLogin Successfully.\n"
-                 << endl;
-            User userInfo = admin.getUserInfo(user_username);
-
-            while (true)
-            {
-                cout << "1. Manage Personal Information \n2. View Total Dengue Cases \n3. View Daily Dengue Cases \n4. View Dengue Alert Messages \n5. Search Status \n6. Logout \n\nEnter your choice: ";
-                cin >> userMenu;
-
-                switch (userMenu)
-                {
-                case 1: // Manage Personal Information
-                    cout << "\n<<<<< Welcome to your profile <<<<<" << endl;
-                    cout << ">>>>> User Profile >>>>>>\n";
-                    cout << "Username: " << userInfo.getUsername() << endl;
-                    cout << "Password: " << userInfo.getPassword() << endl;
-                    cout << "Residence: " << userInfo.getResidence() << endl;
-                    cout << "Phone Number: " << userInfo.getPhoneNo() << endl;
-
-                    while (true)
-                    {
-                        cout << "\n >>>> Options >>>>\n";
-                        cout << "\n1. Modify Username \n2. Modify Password \n3. Modify Residence \n4. Modify Phone Number \n5. Logout\n\nEnter your choice: ";
-
-                        int modifyProfileInfo;
-                        cin >> modifyProfileInfo;
-
-                        switch (modifyProfileInfo)
-                        {
-                        case 1:
-                            cout << "Enter new username: ";
-                            cin >> newUsername;
-                            admin.updateUserInformation(userInfo.getUsername(), newUsername, userInfo.getPassword(), userInfo.getResidence(), userInfo.getPhoneNo());
-                            break;
-                        case 2:
-                            cout << "Enter new password: ";
-                            cin >> newPassword;
-                            admin.updateUserInformation(userInfo.getUsername(), userInfo.getUsername(), newPassword, userInfo.getResidence(), userInfo.getPhoneNo());
-                            break;
-                        case 3:
-                            cout << "Enter new residence: ";
-                            cin >> newResidence;
-                            admin.updateUserInformation(userInfo.getUsername(), userInfo.getUsername(), userInfo.getPassword(), newResidence, userInfo.getPhoneNo());
-                            break;
-                        case 4:
-                            cout << "Enter new phone number: ";
-                            cin >> newPhoneNo;
-                            admin.updateUserInformation(userInfo.getUsername(), userInfo.getUsername(), userInfo.getPassword(), userInfo.getResidence(), newPhoneNo);
-                            break;
-                        case 5:
-                            returnToAdminMenu = true;
-                            break;
-                        }
-                        if (returnToAdminMenu)
-                        {
-                            break;
-                        }
-                    }
-                    break;
-
-                case 2: // View Total Dengue Cases
-                    // code
-                    break;
-                case 3: // View Daily Dengue Cases
-                    // code
-                    break;
-                case 4: // View Dengue Alert Messages
-                    // code
-                    break;
-                case 5: // Search Status
-                    // code
-                    break;
-                case 6: // Logout
-                    return;
-                }
-            }
-        }
-        else
-        {
-            cout << "User login failed. Try again." << endl;
-        }
-        break;
-
-    case 2: // Login As Doctor
-        cout << "\n-------- Login As Doctor --------\n";
-        cout << "\nEnter doctor username: ";
-        cin >> user_username;
-        cout << "Enter doctor password: ";
-        cin >> user_password;
-
-        if (admin.doctorLogin(user_username, user_password))
-        {
-            cout << "\nLogin Successfully.\n"
-                 << endl;
-            Doctor doctorInfo = admin.getDoctorInfo(user_username);
-
-            while (true)
-            {
-                cout << "\n >>>>> Doctor Menu >>>>>\n";
-                cout << "\n1. Manage Personal Information \n2. Report Cases \n3. View Reported Cases \n4. Find Name And Id \n5. Find Age And State \n6. Logout \n\nEnter your choice: ";
-                cin >> userMenu;
-
-                switch (userMenu)
-                {
-                case 1: // Manage Personal Information
-                    cout << "\n<<<<< Welcome to your profile <<<<<" << endl;
-                    cout << ">>>>> Doctor Profile >>>>>>\n";
-                    cout << "Username: " << doctorInfo.getUsername() << endl;
-                    cout << "Password: " << doctorInfo.getPassword() << endl;
-                    cout << "Residence: " << doctorInfo.getResidence() << endl;
-                    cout << "Phone Number: " << doctorInfo.getPhoneNo() << endl;
-
-                    while (!returnToAdminMenu)
-                    {
-                        cout << "\n >>>> Options >>>>\n";
-                        cout << "\n1. Modify Username \n2. Modify Password \n3. Modify Residence \n4. Modify Phone Number \n5. Logout\n\nEnter your choice: ";
-
-                        int modifyProfileInfo;
-                        cin >> modifyProfileInfo;
-
-                        switch (modifyProfileInfo)
-                        {
-                        case 1:
-                            cout << "Enter new username: ";
-                            cin >> newUsername;
-                            admin.updateDoctorInformation(doctorInfo.getUsername(), newUsername, doctorInfo.getPassword(), doctorInfo.getResidence(), doctorInfo.getPhoneNo());
-                            break;
-                        case 2:
-                            cout << "Enter new password: ";
-                            cin >> newPassword;
-                            admin.updateDoctorInformation(doctorInfo.getUsername(), doctorInfo.getUsername(), newPassword, doctorInfo.getResidence(), doctorInfo.getPhoneNo());
-                            break;
-                        case 3:
-                            cout << "Enter new residence: ";
-                            cin >> newResidence;
-                            admin.updateDoctorInformation(doctorInfo.getUsername(), doctorInfo.getUsername(), doctorInfo.getPassword(), newResidence, doctorInfo.getPhoneNo());
-                            break;
-                        case 4:
-                            cout << "Enter new phone number: ";
-                            cin >> newPhoneNo;
-                            admin.updateDoctorInformation(doctorInfo.getUsername(), doctorInfo.getUsername(), doctorInfo.getPassword(), doctorInfo.getResidence(), newPhoneNo);
-                            break;
-                        case 5:
-                            returnToAdminMenu = true;
-                            break;
-                        }
-                    }
-                    continue;
-
-                case 2: // Report Cases
-
-                    cout << "How many cases you want to report?: ";
-                    cin >> noOfCases;
-                    for (int i = 0; i < noOfCases; i++)
-                    {
-                        cout << "Enter patient's Id: ";
-                        cin >> patientId;
-                        cout << "Enter patient's name: ";
-                        cin >> patientName;
-                        cout << "Enter patient's age: ";
-                        cin >> patientAge;
-                        cout << "Enter patient's residence: ";
-                        cin >> patientResidence;
-                        cout << "Enter patient's phone number: ";
-                        cin >> patientPhoneNo;
-                        cout << "Enter patient's emergency contact number: ";
-                        cin >> patientEmergencyContactNo;
-                        cout << "Enter a date in YYYY-MM-DD format: ";
-                        cin >> reportDate;
-
-                        if (dengueCases.isValidDate(reportDate, "%Y-%m-%d"))
-                        {
-                            cout << "Valid date: " << reportDate << endl;
-                        }
-                        else
-                        {
-                            cout << "Invalid date format. Please enter the date in YYYY-MM-DD format." << std::endl;
-                        }
-
-                        dengueCases.insert(Patient(patientId, patientName, patientAge, patientResidence, patientPhoneNo, patientEmergencyContactNo, reportDate, doctorInfo.getUsername()));
-                    };
-                    
-
-                    continue;
-
-                case 3: // View Reported Cases
-                    dengueCases.findLatestCaseByDoctor(doctorInfo.getUsername());
-                    continue;
-
-                case 4: // Find Name And Id
-                    cout << ">>>>>>>> Find dengue fever cases based on patient name or patient id >>>>>>>" << endl;
-                    cout << "Enter Patient Id: ";
-                    cin >> searchPatientId;
-                    cout << "Enter Patient Name: ";
-                    cin >> searchPatientName;
-                    dengueCases.findDengueCasesByPatientIdAndName(searchPatientId, searchPatientName);
-                    continue;
-                case 5: // Find Age And State
-                    cout << "<<<<<< Find the number of cases for any given age range and any given state range <<<<<<\n"
-                         << endl;
-                    cout << "Enter Age Range >>" << endl;
-                    cout << "Min Age: ";
-                    cin >> minAge;
-                    cout << "Max Age: ";
-                    cin >> maxAge;
-                    cout << "\nEnter State Range >>" << endl;
-                    cout << "State 1: ";
-                    cin >> state1;
-                    cout << "State 2: ";
-                    cin >> state2;
-                    countCase = dengueCases.countCasesByAgeAndState(minAge, maxAge, state1, state2);
-                    cout << "\nNumber of cases within the age range " << minAge << " to " << maxAge
-                         << " and state range " << state1 << " to " << state2 << ": " << countCase << endl;
-                    continue;
-                case 6: // Logout
-                    return;
-                }
-                return;
-            }
-        }
-        else
-        {
-            cout << "Doctor login failed. Try again." << endl;
-        }
-        break;
-
-    case 3: // Login As Admin
-        cout << "\nEnter admin username: ";
-        cin >> admin_username;
-        cout << "Enter admin password: ";
-        cin >> admin_password;
-
-        if (admin.login(admin_username, admin_password))
-        {
-            cout << "Login Successfully." << endl;
-
-            while (true)
-            {
-                cout << "------------------ Admin Menu ------------------\n"
-                     << endl;
-                cout << "1. View Total Dengue Cases \n2. View Weekly Dengue Cases \n3. Send Alert Message \n4. Manage Doctor Account \n5. Manage User Account \n6. Logout \n\nEnter your choice: ";
-                cin >> choice;
-
-                switch (choice)
-                {
-                case 1:
-                    annualDengueCases.clear();
-                    annualDengueCases.addNewDengueCases(dengueCases);
-                    fileName = "csvFile/AnnualDengueCasesByState.csv";
-
-                    // Read data from the CSV file and populate the linked list
-                    file.open(fileName);
-                    if (file.is_open())
-                    {
-                        // Skip the header line
-                        getline(file, line);
-
-                        while (getline(file, line))
-                        {
-                            stringstream ss(line);
-                            totalCases = 0;
-                            columnCount = 0;
-
-                            while (getline(ss, token, ','))
-                            {
-                                if (columnCount == 0)
-                                { // Year is in the first column
-                                    year = token;
-                                }
-                                else if (columnCount >= 2) // Starting from the third column
-                                {
-                                    totalCases += stoi(token); // Convert token to integer and add to totalCases
-                                }
-                                columnCount++;
-                            }
-
-                            annualDengueCases.readCsvFileAnnualCases(year, totalCases);
-                        }
-
-                        file.close();
-                        cout << "\n";
-                        cout << ">>>>>>>> Total Dengue Cses by Year >>>>>>>>>>>>\n"
-                             << endl;
-                        annualDengueCases.displayTotalCases();
-                        cout << "\n";
-                    }
-                    else
-                    {
-                        cout << "Could not open the file\n"; // Display an error message if the file couldn't be opened
-                    }
-
-                    cout << ">>>>>>>> Bar Chart(scaled by 1000) >>>>>>>>>>>>\n"
-                         << endl;
-                    annualDengueCases.displayScaledBarChart(1000);
-                    cout << "\n";
-
-                    continue;
-                case 2:
-                    cout << "Which Year, and Week of data you want to view?: "<< endl;
-                    cout << "Year: "<<endl;
-                    cin >> yearForWeeklyCases;
-                    cout >> "Week: "<<endl;
-                    cin >> week;
-
-                    fileName = "csvFile/NumberOfDengueFeverCasesWeeklyByState.csv";
-
-                    
-
-                    // Read data from the CSV file and populate the linked list
-                    file.open(fileName);
-                    if (file.is_open())
-                    {
-
-                        // Skip the header line
-                        getline(file, line);
-
-                        cout << "\nYear\tWeek\tJHR\tKDH\tKTN\tMLK\tN.S\tPHG\tPRK\tPLS\tP.P\tSBH\tSWK\tSGR\tTRG\tKL\tLBN" << endl;
-                        cout << "------------------------------------------------------------------------------------------------------------------------------------" << endl;
-
-                        while (getline(file, line))
-                        {
-                            stringstream str(line);
-                            string rowData;
-
-                            while (getline(str, word, ',')) // Split the line into fields separated by commas
-                            {
-                                if (!rowData.empty())
-                                {
-                                    rowData += "\t"; // Add a comma if it's not the first field in the row
-                                }
-                                rowData += word; // Append the current field to the row data
-                            }
-
-                            weeklyDengueCases.readCsvFile(rowData); // Add the complete row data to the linked list
-                            cout << rowData << endl;                // Print each row
-                        }
-
-                        file.close();
-                    }
-
-                   
-                    continue;
-                case 3:
-                    // code
-                    break;
-                case 4:
-                    cout << "\n>>>>> Create New Doctor >>>>\n"
-                         << endl;
-                    cout << "Username: ";
-                    cin >> user_username;
-                    cout << "Password: ";
-                    cin >> user_password;
-                    cout << "Residence: ";
-                    cin >> user_residence;
-                    cout << "Phone Number: ";
-                    cin >> user_phoneNo;
-                    admin.createDoctor(user_username, user_password, user_residence, user_phoneNo);
-                    break;
-
-                case 5:
-                    cout << "\n>>>>> Create New User >>>>\n"
-                         << endl;
-                    cout << "Username: ";
-                    cin >> user_username;
-                    cout << "Password: ";
-                    cin >> user_password;
-                    cout << "Residence: ";
-                    cin >> user_residence;
-                    cout << "Phone Number: ";
-                    cin >> user_phoneNo;
-                    admin.createUser(user_username, user_password, user_residence, user_phoneNo);
-                    break;
-                case 6:
-                    return;
-                }
-            }
-        }
-        else
-        {
-            cout << "Wrong admin username or password. Try again." << endl;
-        }
-        break;
-    }
-}
-
-int main()
-{
-    Admin admin("admin", "admin123");
-    Doctor doctor;
-    DengueCasesLinkedList dengueCases;
-    Patient patient;
-    AnnualDengueCasesLinkedList annualDengueCases;
-    WeeklyDengueCasesLinkedList weeklyDengueCases;
 
     while (true)
     {
-        mainMenu(admin, doctor, dengueCases, patient, annualDengueCases, weeklyDengueCases);
-    }
+        cout << "------------------ Admin Menu ------------------\n"
+             << endl;
+        cout << "1. View Total Dengue Cases \n2. View Weekly Dengue Cases \n3. Send Alert Message \n4. Manage Doctor Account \n5. Manage User Account \n6. Delete Inactive User Account \n7. Logout \n\nEnter your choice: ";
 
-    return 0;
+        int adminChoice;
+        cin >> adminChoice;
+
+        switch (adminChoice)
+        {
+        case 1:
+        {
+            annualDengueCases.clear();
+            annualDengueCases.addNewDengueCases(dengueCases);
+            fileName = "csvFile/AnnualDengueCasesByState.csv";
+
+            // Read data from the CSV file and populate the linked list
+            file.open(fileName);
+            if (file.is_open())
+            {
+                // Skip the header line
+                getline(file, line);
+
+                while (getline(file, line))
+                {
+                    stringstream ss(line);
+                    totalCases = 0;
+                    columnCount = 0;
+
+                    while (getline(ss, token, ','))
+                    {
+                        if (columnCount == 0)
+                        { // Year is in the first column
+                            year = token;
+                        }
+                        else if (columnCount >= 2) // Starting from the third column
+                        {
+                            totalCases += stoi(token); // Convert token to integer and add to totalCases
+                        }
+                        columnCount++;
+                    }
+
+                    annualDengueCases.readCsvFileAnnualCases(year, totalCases);
+                }
+
+                file.close();
+                cout << "\n";
+                cout << ">>>>>>>> Total Dengue Cases by Year >>>>>>>>>>>>\n"
+                     << endl;
+                annualDengueCases.displayTotalCases();
+                cout << "\n";
+            }
+            else
+            {
+                cout << "Could not open the file\n"; // Display an error message if the file couldn't be opened
+            }
+
+            cout << ">>>>>>>> Bar Chart(scaled by 1000) >>>>>>>>>>>>\n"
+                 << endl;
+            annualDengueCases.displayScaledBarChart(1000);
+            cout << "\n";
+
+            continue;
+        }
+        case 2:
+        {
+
+            fileName = "csvFile/NumberOfDengueFeverCasesWeeklyByState.csv";
+
+            // Read data from the CSV file and populate the linked list
+            file.open(fileName);
+            if (file.is_open())
+            {
+
+                // Skip the header line
+                getline(file, line);
+
+                string line;
+                while (getline(file, line))
+                {
+                    istringstream ss(line);
+                    string token;
+                    int data[15];
+                    int year, week, i = 0;
+
+                    while (getline(ss, token, ','))
+                    {
+                        if (i == 0)
+                        {
+                            year = stoi(token);
+                        }
+                        else if (i == 1)
+                        {
+                            week = stoi(token);
+                        }
+                        else
+                        {
+                            data[i - 2] = stoi(token);
+                        }
+                        i++;
+                    }
+
+                    weeklyDengueCases.insert(year, week, data);
+                }
+
+                file.close();
+            }
+            else
+            {
+                cout << "Could not open the file." << endl;
+            }
+            int year, week;
+            cout << "Enter the year: ";
+            cin >> year;
+            cout << "Enter the week: ";
+            cin >> week;
+
+            weeklyDengueCases.sortCasesByState(year, week);
+
+            continue;
+        }
+        case 3:
+        {
+            weeklyDengueCases.clear();
+            // Add data to the linked list using the insertNewCases function
+            int data2023Week1[15] = {20, 10, 15, 5, 8, 25, 18, 0, 5, 12, 10, 22, 14, 2, 0};
+            int data2023Week2[15] = {22, 12, 18, 6, 9, 27, 20, 0, 6, 15, 12, 24, 16, 3, 0};
+            int data2023Week3[15] = {23, 15, 19, 7, 10, 30, 22, 0, 7, 18, 14, 26, 18, 4, 0};
+
+            weeklyDengueCases.insertNewCases(2023, 1, data2023Week1);
+            weeklyDengueCases.insertNewCases(2023, 2, data2023Week2);
+            weeklyDengueCases.insertNewCases(2023, 3, data2023Week3);
+
+            // Check for alerts in specific states
+            for (int stateIndexToCheck = 0; stateIndexToCheck < 15; stateIndexToCheck++)
+            {
+                weeklyDengueCases.checkAlerts(stateIndexToCheck);
+            }
+
+            continue;
+        }
+        case 4:
+        {
+            cout << "\n>>>>> Create New Doctor >>>>\n"
+                 << endl;
+            cout << "Username: ";
+            cin >> user_username;
+            cout << "Password: ";
+            cin >> user_password;
+            cout << "Residence: ";
+            cin >> user_residence;
+            cout << "Phone Number: ";
+            cin >> user_phoneNo;
+            admin.createDoctor(user_username, user_password, user_residence, user_phoneNo);
+            break;
+        }
+        case 5:
+        {
+            cout << "\n>>>>> Create New User >>>>\n"
+                 << endl;
+            cout << "Username: ";
+            cin >> user_username;
+            cout << "Password: ";
+            cin >> user_password;
+            cout << "Residence: ";
+            cin >> user_residence;
+            cout << "Phone Number: ";
+            cin >> user_phoneNo;
+            admin.createUser(user_username, user_password, user_residence, user_phoneNo, 0);
+            break;
+        }
+        case 6:
+        {
+
+            time_t fifteenDaysAgo = time(NULL) - (15 * 24 * 60 * 60); // 15 days in seconds
+            admin.createUser("user1", "password1", "residence1", 012, fifteenDaysAgo);
+            admin.createUser("user2", "password2", "residence2", 016, fifteenDaysAgo);
+
+            cout << "\nAll Registered Users:\n"
+                 << endl;
+            admin.printAllUsers();
+            // Call the checkInactivity function to check for inactive users
+            admin.checkInactivity();
+            cout << "\nAll Registered Users after removing the inactive one:\n"
+                 << endl;
+            admin.printAllUsers();
+            break;
+        }
+        case 7:
+        {
+            return;
+        }
+        default:
+        {
+            cout << "Invalid choice. Please try again." << endl;
+        }
+        }
+    }
 }
