@@ -42,6 +42,7 @@ public:
     // void sendAlertToUsers(string stateFound);
     // void sendAlertToUsers(string alertedStates[], int alertedCount, string userState);
     void sendAlertToUsers(string userState);
+    void navigateAlertMessages(string alertMessages[], int alertCount);
 
     void clear();
 

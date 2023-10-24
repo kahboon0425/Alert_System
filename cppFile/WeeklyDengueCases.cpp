@@ -251,17 +251,61 @@ void WeeklyDengueCasesLinkedList::sendAlertToUsers(string userState)
 
     if (isUserStateAlerted)
     {
-        cout << "Alert Messages:" << endl;
-        for (int i = 0; i < alertCount; ++i)
-        {
-            std::cout << alertMessagesForUser[i] << std::endl;
-        }
+        cout << "\n-----------------Alert Messages!!!!!!!!!!!-----------------:\n" << endl;
+        // for (int i = 0; i < alertCount; ++i)
+        // {
+        //     std::cout << alertMessagesForUser[i] << std::endl;
+            
+        // }
+        cout << alertMessagesForUser[0] << endl;
+        navigateAlertMessages(alertMessagesForUser, alertCount);
     }
     else
     {
-        cout << "Your State is safe. No Alert Message" << endl;
+        cout << "\nYour State is safe. No Alert Message\n" << endl;
     }
 }
+
+void WeeklyDengueCasesLinkedList::navigateAlertMessages(string alertMessages[], int alertCount) {
+        int currentMessageIndex = 0;
+
+        // Provide navigation options for the user
+        while (true) {
+            cout << "\nNavigation Options:" << endl;
+            cout << "1. Move forward to the next message" << endl;
+            cout << "2. Move backward to the previous message" << endl;
+            cout << "3. Exit navigation\n" << endl;
+
+            int choice;
+            cout << "Enter your choice: ";
+            cin >> choice;
+
+            switch (choice) {
+                case 1:
+                    if (currentMessageIndex < alertCount - 1) {
+                        currentMessageIndex++;
+                    } else {
+                        cout << "\nYou've reached the last message." << endl;
+                    }
+                    break;
+                case 2:
+                    if (currentMessageIndex > 0) {
+                        currentMessageIndex--;
+                    } else {
+                        cout << "You're at the beginning of the messages." << endl;
+                    }
+                    break;
+                case 3:
+                    return; // Exit navigation
+                default:
+                    cout << "Invalid choice. Please try again." << endl;
+            }
+
+            // Display the current alert message
+            cout << "\nAlert Message " << (currentMessageIndex + 1) << " of " << alertCount << ":" << endl;
+            cout << alertMessages[currentMessageIndex] << endl;
+        }
+    }
 
 // void WeeklyDengueCasesLinkedList::sendAlertToUsers(string alertedStates[], int alertedCount, string userState)
 // {
