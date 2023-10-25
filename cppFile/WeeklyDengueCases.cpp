@@ -198,13 +198,13 @@ void WeeklyDengueCasesLinkedList::checkAlerts(int stateIndex)
 
     if (latestYear == 0)
     {
-        cout << "No alerts for state " << getStateName(stateIndex) << " at this time." << endl;
+        cout << "No alerts for state " << getStateName(stateIndex) << " at this time.\n" << endl;
         return;
     }
 
     string stateFound = getStateName(stateIndex);
     alertedStates[alertedCount++] = stateFound;
-    string alertMessage = "ALERT: Dengue cases in " + stateFound + " have reached 20 or more in the last 3 weeks.";
+    string alertMessage = "ALERT: Dengue cases in " + stateFound + " have reached 20 or more and persist for more than two weeks.\n";
     cout << alertMessage << std::endl;
 
     // sendAlertToUsers(alertedStates, alertedCount, "");
@@ -229,8 +229,8 @@ void WeeklyDengueCasesLinkedList::sendAlertToUsers(string userState)
             isUserStateAlerted = true; // The user's state is in the alerted states
 
             string alertMessage1 = "ALERT: Dengue cases in " + userState + " have reached 20 or more in the last 3 weeks.";
-            string alertMessage2 = "Dengue cases are increasing. Take precautions against dengue.";
-            string alertMessage3 = "Drink more water.";
+            string alertMessage2 = "ALERT: Dengue cases are increasing. Take precautions against dengue.";
+            string alertMessage3 = "ALERT: Dengue cases in your state are serious now. Please drink more water.";
 
             // Store the alert messages in the array
             if (alertCount < maxAlerts)
@@ -371,57 +371,4 @@ void WeeklyDengueCasesLinkedList::clear()
     }
 }
 
-// void WeeklyDengueCasesLinkedList::initializeCasesFor2023() {
-//         // Find the nodes for the specified year (2023) and week (1)
-//         int year = 2023;
-//         int week = 1;
-//         WeeklyDengueCases* current = head;
 
-//         while (current && (current->year != year || current->week != week)) {
-//             current = current->next;
-//         }
-
-//         if (!current) {
-//             cout << "Data not found for the specified year and week." << endl;
-//             return;
-//         }
-
-//         // Set the cases for Johor (index 0) and Kuala Lumpur (index 13) to 20 for the consecutive weeks (1, 2, and 3)
-//         int johorIndex = 0;
-//         int klIndex = 13;
-//         for (int i = 0; i < 3; i++) {
-//             current->cases[johorIndex] = 20;
-//             current->cases[klIndex] = 20;
-
-//             // If you want to set the cases for the next consecutive week, create a new node
-//             week++;
-//             WeeklyDengueCases* newNode = new WeeklyDengueCases(year, week);
-//             newNode->cases[johorIndex] = 20;
-//             newNode->cases[klIndex] = 20;
-//             newNode->next = current->next;
-//             current->next = newNode;
-
-//             current = newNode; // Move to the next node for the next week
-//         }
-//     }
-// };
-
-// // Member function to read CSV data and populate the linked list
-// void WeeklyDengueCasesLinkedList::readCsvFile(const std::string& rowData) {
-//     WeeklyDengueCases* newNode = new WeeklyDengueCases(rowData);
-
-//     if (head == nullptr) {
-//         head = newNode;
-//     } else {
-//         WeeklyDengueCases* last = head;
-//         while (last->next != nullptr) {
-//             last = last->next;
-//         }
-//         last->next = newNode;
-//     }
-//     size++;
-// }
-// // View Weekly dengue cases in all state sort by case number
-// void WeeklyDengueCasesLinkedList::viewWeeklyCasesSortByCaseNumber(const string &year, const int &week){
-
-// }

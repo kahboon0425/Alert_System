@@ -49,7 +49,8 @@ void Admin::createUser(const string &uUsername, const string &uPassword, const s
     userContainer[userSize] = User(uUsername, uPassword, uResidence, uPhoneNo, loginTime);
     userSize++;
 
-    cout << "\nUser registered successfully!\n" << endl;
+    cout << "\nUser registered successfully!\n"
+         << endl;
 }
 
 bool Admin::userLogin(const string &username, const string &password)
@@ -64,9 +65,6 @@ bool Admin::userLogin(const string &username, const string &password)
     }
     return false;
 }
-
-
-
 
 User Admin::getUserInfo(const string &username)
 {
@@ -184,7 +182,8 @@ void Admin::updateDoctorInformation(const string &dUsername, const string &dNewU
 
 void Admin::checkInactivity()
 {
-    cout << "\nUser to be deleted (more than 14 days not login):\n" << endl;
+    cout << "\n-----------User to be deleted (more than 14 days not login):--------------\n"
+         << endl;
     int inactivityThreshold = time(NULL) - (15 * 24 * 60 * 60);
     for (int i = 0; i < userSize; i++)
     {
@@ -194,8 +193,8 @@ void Admin::checkInactivity()
         {
             cout << "Username: " << user.getUsername() << endl;
             cout << "Password: " << user.getPassword() << endl;
-            cout << "Residence: "<< user.getResidence() <<endl;
-            cout << "Phone No: " << user.getPhoneNo() <<endl;
+            cout << "Residence: " << user.getResidence() << endl;
+            cout << "Phone No: " << user.getPhoneNo() << endl;
 
             // Format and print the Last Activity Time
             struct tm *timeinfo;
@@ -203,6 +202,8 @@ void Admin::checkInactivity()
             char buffer[11]; // To hold the formatted date (YYYY-MM-DD)
             strftime(buffer, sizeof(buffer), "%Y-%m-%d", timeinfo);
             cout << "Last Activity Time: " << buffer << endl;
+            cout << "\n"
+                 << endl;
 
             // Take appropriate action, e.g., deleting the user or disabling the account
             deleteUserAtIndex(i);
@@ -227,7 +228,6 @@ void Admin::deleteUserAtIndex(int index)
 
     // Decrease the userSize to reflect the removal
     userSize--;
-
 }
 
 void Admin::printAllUsers()
@@ -237,8 +237,8 @@ void Admin::printAllUsers()
         User &user = userContainer[i];
         cout << "Username: " << user.getUsername() << endl;
         cout << "Password: " << user.getPassword() << endl;
-        cout << "Residence: "<<user.getResidence() <<endl;
-        cout <<"Phone No: " <<user.getPhoneNo()<< endl;
+        cout << "Residence: " << user.getResidence() << endl;
+        cout << "Phone No: " << user.getPhoneNo() << endl;
 
         // Get the Last Activity Time from the user
         time_t lastLoginTime = user.getLastLoginTime();
@@ -250,8 +250,6 @@ void Admin::printAllUsers()
         cout << "Last Activity Date: " << buffer << endl;
     }
 }
-
-
 
 Admin::~Admin()
 {

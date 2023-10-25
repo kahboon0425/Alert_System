@@ -32,6 +32,26 @@ int User::getPhoneNo()
     return userPhoneNo;
 }
 
+string User::setUsername(const string &username)
+{
+    userUsername = username;
+}
+
+string User::setPassword(const string &password)
+{
+    userPassword = password;
+}
+
+string User::setResidence(const string &residence)
+{
+    userResidence = residence;
+}
+
+int User::setPhoneNo(const int &phoneNo)
+{
+    userPhoneNo = phoneNo;
+}
+
 time_t User::getLastLoginTime() 
 {
     return lastActivityTime;

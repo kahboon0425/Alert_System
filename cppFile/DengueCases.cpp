@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Patient::Patient(const string &id, const string &name, const int &age, const string &residence, const int &phoneNo, const int &emergencyContactNo, const string &date, const string &doctor)
+Patient::Patient(const string &id, const string &name, const int &age, const string &residence, const int &phoneNo, const int &emergencyContactNo, const string &date, const string &diagnosisDetails, const string &doctor)
 {
     patientId = id;
     patientName = name;
@@ -14,6 +14,7 @@ Patient::Patient(const string &id, const string &name, const int &age, const str
     patientPhoneNo = phoneNo;
     patientEmergencyContactNo = emergencyContactNo;
     dateReported = date;
+    patientDiagnosisDetails = diagnosisDetails;
     doctorReported = doctor;
 }
 
@@ -50,6 +51,10 @@ string Patient::getPatientResidence() const
 string Patient::getDateReported() const
 {
     return dateReported;
+}
+
+string Patient::getDiagnosisDetails() const{
+    return patientDiagnosisDetails;
 }
 
 string Patient::getDoctorReported() const
@@ -103,6 +108,7 @@ void DengueCasesLinkedList::print()
         cout << "Patient Phone No: " << current->data.getPatientPhoneNo() << endl;
         cout << "Patient Emergency Contact: " << current->data.getPatientEmergencyContactNo() << endl;
         cout << "Date Reported: " << current->data.getDateReported() << endl;
+        cout << "Diagnosis Details" << current ->data.getDiagnosisDetails() << endl;
         cout << "Doctor Reported: " << current->data.getDoctorReported() << endl;
         current = current->next;
     }
@@ -214,6 +220,7 @@ void DengueCasesLinkedList::findLatestCaseByDoctor(const string &doctorUsername)
             cout << "Patient Phone No: " << latestCases[i].getPatientPhoneNo() << endl;
             cout << "Patient Emergency Contact: " << latestCases[i].getPatientEmergencyContactNo() << endl;
             cout << "Date Reported: " << latestCases[i].getDateReported() << endl;
+            cout << "DiagnosisDetails: "<< latestCases[i].getDiagnosisDetails() << endl;
             cout << "Doctor Reported: " << latestCases[i].getDoctorReported() << endl;
             cout << "-------------------" << endl;
         }
@@ -249,7 +256,7 @@ void DengueCasesLinkedList::findDengueCasesByPatientIdAndName(const string &pati
 
     if (found)
     {
-        cout << ">>>>>> Dengue Case Found: >>>>>>\n"
+        cout << "\n---------- Dengue Case Found: -----------\n"
              << endl;
         cout << "Patient Id: " << matchedPatient.getPatientId() << endl;
         cout << "Patient Name: " << matchedPatient.getPatientName() << endl;
@@ -258,6 +265,7 @@ void DengueCasesLinkedList::findDengueCasesByPatientIdAndName(const string &pati
         cout << "Patient Phone No: " << matchedPatient.getPatientPhoneNo() << endl;
         cout << "Patient Emergency Contact: " << matchedPatient.getPatientEmergencyContactNo() << endl;
         cout << "Date Reported: " << matchedPatient.getDateReported() << endl;
+        cout << "Diagnosis Details: "<< matchedPatient.getDiagnosisDetails() <<endl;
         cout << "Doctor Reported: " << matchedPatient.getDoctorReported() << endl;
     }
     else
@@ -297,6 +305,7 @@ void DengueCasesLinkedList::findPersonalDengueFeverStatusBasedOnDateRange(const 
             cout << "Phone Number: " << patient.getPatientPhoneNo() << endl;
             cout << "Emergency Contact Number: " << patient.getPatientEmergencyContactNo() << endl;
             cout << "Report Date: " << patient.getDateReported() << endl;
+            cout << "Diagnosis Details: "<<patient.getDiagnosisDetails() << endl;
             cout << "Reporting Doctor: " << patient.getDoctorReported() << endl;
             cout << "------------------------" << endl;
             found = true; // At least one patient found in the date range

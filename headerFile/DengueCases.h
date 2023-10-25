@@ -9,7 +9,7 @@ class Patient
 {
 public:
     Patient(){};
-    Patient(const string &id, const string &name, const int &age, const string &residence, const int &phoneNo, const int &emergencyContactNo, const string &date, const string &doctor);
+    Patient(const string &id, const string &name, const int &age, const string &residence, const int &phoneNo, const int &emergencyContactNo, const string &date, const string &diagnosisDetails, const string &doctor);
 
     // Getter
     string getPatientId() const;
@@ -19,6 +19,7 @@ public:
     int getPatientPhoneNo()const;
     int getPatientEmergencyContactNo() const;
     string getDateReported() const;
+    string getDiagnosisDetails() const;
     string getDoctorReported() const;
 
 private:
@@ -29,6 +30,7 @@ private:
     int patientPhoneNo;
     int patientEmergencyContactNo;
     string dateReported;
+    string patientDiagnosisDetails;
     string doctorReported;
 };
 

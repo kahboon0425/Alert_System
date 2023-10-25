@@ -11,6 +11,13 @@ public:
     bool login(const string& username, const string& password);
     void modifyProfile(const string& newUsername, const string& newPassword, const string& newResidence, const int& newPhoneNo);
     void setLoginTime();
+
+    // setter
+    string setUsername(const string &username);
+    string setPassword(const string &password);
+    string setResidence(const string &residence);
+    int setPhoneNo(const int &phoneNo);
+    
     // void updateLastActivityTime();
     // bool isInactive(int inactivityThreshold) const;
 
